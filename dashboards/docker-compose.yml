@@ -1,0 +1,36 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+services:
+  superset:
+    build: ./superset
+    container_name: superset
+    healthcheck:
+      test: wget --spider http://localhost:8088/superset/welcome/ || exit 1
+      start_period: 3s
+      interval: 3s
+      timeout: 2s
+      retries: 3
+    ports:
+      - 28088:8088
+    environment:
+      WTF_CSRF_ENABLED: "False"
+      MAPBOX_API_KEY: "${MAPBOX_API_KEY:-}"
+
+  turnilo:
+    build: ./turnilo
+    container_name: turnilo
+    healthcheck:
+      test: wget --spider http://localhost:9090 || exit 1
+      start_period: 3s
+      interval: 3s
+      timeout: 2s
+      retries: 3
+    ports:
+      - 9091:9090
+    environment:
+      DRUID: http://druid-router:8888
+

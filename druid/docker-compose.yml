@@ -1,0 +1,218 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  postgres: {}
+  zk: {}
+  zk_datalog: {}
+  zk_logs: {}
+  coordinator_var: {}
+  broker_var: {}
+  historical_var: {}
+  middlemanager_var: {}
+  router_var: {}
+  shared: {}
+
+services:
+  druid-postgres:
+    image: postgres:latest
+    container_name: druid-postgres
+    hostname: druid-postgres
+    healthcheck:
+      test: pg_isready -U druid
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "45432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: FoolishPassword
+      POSTGRES_USER: druid
+      POSTGRES_DB: druid
+
+  # Need 3.5 or later for container nodes
+  druid-zookeeper:
+    image: zookeeper:3.5
+    container_name: druid-zookeeper
+    hostname: druid-zookeeper
+    healthcheck:
+      test: echo ruok | nc -w 2 localhost 2181 | grep imok
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - zk:/data
+      - zk_datalog:/datalog
+      - zk_logs:/logs
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_4LW_COMMANDS_WHITELIST: "ruok,stat"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.50'
+#          memory: 50M
+#        reservations:
+#          memory: 20M
+
+
+  druid-coordinator:
+    image: apache/druid:${VERSION}
+    container_name: druid-coordinator
+    hostname: druid-coordinator
+    healthcheck:
+      test: wget http://localhost:8081/status/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    volumes:
+      - coordinator_var:/opt/druid/var
+      - shared:/opt/shared
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./staging:/opt/staging
+    depends_on:
+      - druid-zookeeper
+      - druid-postgres
+    ports:
+      - "48081:8081"
+    command:
+      - coordinator
+    env_file:
+      - environment
+    environment:
+      JAVA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/druid-config.yml
+      # -Djava.rmi.server.hostname=0.0.0.0 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9999 -Dcom.sun.management.jmxremote.rmi.port=9999 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false
+
+  druid-broker:
+    image: apache/druid:${VERSION}
+    container_name: druid-broker
+    hostname: druid-broker
+    healthcheck:
+      test: wget http://localhost:8082/status/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - broker_var:/opt/druid/var
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./staging:/opt/staging
+    depends_on:
+      - druid-zookeeper
+      - druid-postgres
+      - druid-coordinator
+    ports:
+      - "48082:8082"
+    command:
+      - broker
+    env_file:
+      - environment
+    environment:
+      JAVA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/druid-config.yml
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 1.25G 
+
+  druid-historical:
+    image: apache/druid:${VERSION}
+    container_name: druid-historical
+    hostname: druid-historical
+    healthcheck:
+      test: wget http://localhost:8083/druid/historical/v1/readiness || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - historical_var:/opt/druid/var
+      - shared:/opt/shared
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./staging:/opt/staging
+    depends_on:
+      - druid-zookeeper
+      - druid-postgres
+      - druid-coordinator
+    ports:
+      - "48083:8083"
+    command:
+      - historical
+    env_file:
+      - environment
+    environment:
+      JAVA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/druid-config.yml
+
+  druid-middlemanager:
+    image: apache/druid:${VERSION}
+    container_name: druid-middlemanager
+    hostname: druid-middlemanager
+#    deploy:
+#      replicas: 2
+    healthcheck:
+      test: wget  http://localhost:8091/status/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - middlemanager_var:/opt/druid/var
+      - shared:/opt/shared
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./staging:/opt/staging:rwx
+    depends_on:
+      - druid-zookeeper
+      - druid-postgres
+      - druid-coordinator
+    ports:
+      - "48091:8091"
+      - "5001:5001"
+    command:
+      - middleManager
+    env_file:
+      - environment
+    environment:
+      JAVA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/druid-config.yml
+
+  druid-router:
+    image: apache/druid:${VERSION}
+    container_name: druid-router
+    hostname: druid-router
+    healthcheck:
+      test: wget http://localhost:8888/status/health || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    volumes:
+      - router_var:/opt/druid/var
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./staging:/opt/staging
+    depends_on:
+      - druid-zookeeper
+      - druid-postgres
+      - druid-coordinator
+    ports:
+      - "48888:8888"
+    command:
+      - router
+    env_file:
+      - environment
+    environment:
+      JAVA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/druid-config.yml
+
+#  #this is not part of Apache Druid
+#  druid-exporter:
+#    image: quay.io/opstree/druid-exporter:v0.11
+#    container_name: druid-exporter
+#    environment:
+#      DRUID_URL: "http://druid-router:8888"
+#      PORT: "7071"
+#    ports:
+#      - "17073:7071"

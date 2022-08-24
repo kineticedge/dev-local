@@ -1,0 +1,83 @@
+#!/bin/bash
+
+usage() {
+  echo ""
+  echo "Usage: $0 {load|unload|task} specification-file [specification-files]"
+  echo ""
+}
+
+if [ $# -lt 2 ]; then
+  usage
+  exit
+fi
+
+OPERATION=$1
+shift
+
+declare -a FILES=( "$@" )
+
+URL=http://localhost:48081
+
+CONTENT_TYPE_HDR='Content-Type:application/json'
+
+task() {
+
+  DATA=$1
+  if [ ! -f "$DATA" ]; then
+    echo "skipping $DATA, file not found."
+    return
+  fi
+
+  curl -s -X POST -H $CONTENT_TYPE_HDR -d @$DATA $URL/druid/indexer/v1/task | jq -r ".task"
+  #curl -X POST -H "Content-Type:application/json" -d @./druid/compact.json http://localhost:48081/druid/indexer/v1/task
+}
+
+load() {
+
+    DATA=$1
+    if [ ! -f "$DATA" ]; then
+      echo "skipping $DATA, file not found."
+      return
+    fi
+
+  curl -s -X POST -H $CONTENT_TYPE_HDR -d @$DATA $URL/druid/indexer/v1/supervisor | jq -r ".id"
+}
+
+unload() {
+
+  DATA=$1
+  if [ ! -f "$DATA" ]; then
+    echo "skipping $DATA, file not found."
+    return
+  fi
+
+  spec=$(cat $DATA | jq -r ".spec.dataSchema.dataSource | select (.!=null)")
+
+  if [ "${spec}" == "" ]; then 
+    echo "skipping $DATA, unable to extract dataSource from spec."
+    return
+  fi
+
+  curl -s -X POST $URL/druid/indexer/v1/supervisor/${spec}/reset
+  curl -s -X POST $URL/druid/indexer/v1/supervisor/${spec}/shutdown
+}
+
+case "${OPERATION}" in
+  task)
+    for i in "${FILES[@]}"; do
+      task $i
+    done
+    ;;
+  load)
+    for i in "${FILES[@]}"; do
+      load $i
+    done
+    ;;
+  unload)
+    for i in "${FILES[@]}"; do
+      unload $i
+    done
+    ;;
+  *)
+    usage
+esac

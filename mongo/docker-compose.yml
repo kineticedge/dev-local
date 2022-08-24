@@ -1,0 +1,49 @@
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  db: {}
+  configdb: {}
+
+services:
+  mongo:
+    image: mongo:5.0.9
+    hostname: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    # replica set is required for debezium to leverage CDC.
+    # secret key is required due to authentication w/ replica sets (as key would need to be identical on all replacs)
+    command: [ "--keyFile", "/secret.key", "--replSet", "rs0" ]
+    # to use debezium, a replica-set is needed; and a replica-set has to be initialized; leverage health-check
+    # to do this. Product requires at least 3 instances for a proper replica deployment, but for dev environment,
+    # it can be enabled as a single instance
+    healthcheck:
+      test: test $$(echo "rs.status().ok || rs.initiate().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    volumes:
+      - db:/data/db
+      - configdb:/data/configdb
+      - ./secret.key:/secret.key
+      - ./db-init/:/docker-entrypoint-initdb.d
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+      MONGO_INITDB_DATABASE: main
+      MONGO_USER: mongo_user
+      MONGO_PASSWORD: mongo_password
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: mongo-express
+    hostname: mongo-express
+    ports:
+      - 28081:8081
+    environment:
+      #ME_CONFIG_MONGODB_SERVER: ''
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongo

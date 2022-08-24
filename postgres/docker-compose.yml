@@ -1,0 +1,30 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  postgres: {}
+
+services:
+  postgres:
+    image: postgres:14.3
+    hostname: postgres
+    container_name: postgres
+    healthcheck:
+      test: pg_isready -U main
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    command: "postgres -c wal_level=logical"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./data:/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: admin
+      POSTGRES_DB: main
+

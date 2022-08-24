@@ -1,0 +1,155 @@
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  prometheus: {}
+  grafana: {}
+  kafka-ui: {}
+
+services:
+
+  prometheus:
+    hostname: prometheus
+    image: prom/prometheus
+    container_name: prometheus
+    privileged: true
+    healthcheck:
+      test: wget --spider http://localhost:9090/ || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/targets.json:/etc/prometheus/targets.json
+
+  grafana:
+    hostname: grafana
+    image: grafana/grafana:8.5.3
+    container_name: grafana
+    healthcheck:
+      test: wget --spider http://localhost:3000/ || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: grafana
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel, grafadruid-druid-datasource"
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/prometheus.yml:/etc/grafana/provisioning/datasources/prometheus.yml
+      - ./grafana/druid.yml:/etc/grafana/provisioning/datasources/druid.yml
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+
+  kafka-exporter:
+    hostname: kafka-exporter
+    image: danielqsj/kafka-exporter:latest
+    container_name: kafka-exporter
+    healthcheck:
+      test: wget --spider http://localhost:9308/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    ports:
+      - '9308:9308'
+    command: --kafka.server=broker-1:9092 --kafka.server=broker-2:9092 --kafka.server=broker-3:9092
+
+  kowl:
+    image: quay.io/cloudhut/kowl:v1.5.0
+    hostname: kowl
+    container_name: kowl
+    healthcheck:
+      test: wget --spider http://localhost:8080/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./kowl/config.yaml:/etc/kowl/config.yaml
+    ports:
+      - "9000:8080"
+    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:0.3.3
+    container_name: kafka-ui
+    healthcheck:
+      test: curl --fail http://localhost:8080/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - kafka-ui:/tmp
+    ports:
+      - "9001:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker-1:9092,broker-2:9092,broker-3:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
+
+  kouncil:
+    image: consdata/kouncil:1.0
+    container_name: kouncil
+    volumes:
+      - ./kouncil/kouncil.yaml:/config/kouncil.yaml
+    ports:
+      - "9002:8080"
+    environment:
+      bootstrapServers: "broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092"
+
+  akhq:
+    image: tchiotludo/akhq:latest
+    container_name: akhq
+    volumes:
+      - ./akhq/application.yml:/app/application.yml
+    ports:
+      - "9003:8080"
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: kafdrop
+    ports:
+      - "9004:9000"
+    environment:
+      KAFKA_BROKERCONNECT: broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092
+
+#  druid-exporter:
+#    image: druid-exporter:latest
+#    container_name: druid-exporter
+#    command: 
+#      - "conf/example_druid_v_0_17_0.json" -t druid-metric -b broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092 -g "druid-exporter"
+#    ports:
+#      - "9999:8000"
+
+#  cmak_zk:
+#    image: zookeeper:latest
+#    restart: always
+#    environment:
+#      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+#  cmak:
+#    image: cmak:latest #hlebalbau/kafka-manager:stable
+#    hostname: cmak
+#    container_name: cmak
+#    restart: always
+#    command:
+#      - "-Dcmak.zkhosts=cmak_zk:2181"
+#    ports:
+#      - "9005:9000"

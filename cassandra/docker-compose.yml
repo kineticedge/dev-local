@@ -1,0 +1,34 @@
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  cassandra_data: {}
+  etc: {}
+
+services:
+  cassandra:
+    image: cassandra:4.0.4
+    hostname: cassandra
+    container_name: cassandra
+    ports:
+      - "9042:9042"  
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    volumes:
+      - cassandra_data:/var/lib/cassandra    
+      - etc:/etc/cassandra   
+      - ./data:/data
+    environment:
+      CASSANDRA_CLUSTER_NAME: cassandra
+      CASSANDRA_DATACENTER: dc_main
+      CASSANDRA_PASSWORD: cassandra
+#      CASSANDRA_SEEDS: "cass1,cass2"    
+#      CASSANDRA_RACK: West
+#      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+#      CASSANDRA_NUM_TOKENS: 128

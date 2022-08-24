@@ -1,0 +1,55 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+services:
+  jobmanager:
+    image: flink:1.15.0-scala_2.12-java11
+    container_name: flink_jobmanager
+    ports:
+      - "48081:8081"
+      - "46123:6123"
+      - "46124:6124"
+      - "46125:6125"
+    healthcheck:
+      test: curl --fail http://localhost:8081/overview
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 0s
+    command: jobmanager
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+    volumes:
+      - ./jars:/jars
+      - ./data:/data
+
+  taskmanager:
+    image: flink:1.15.0-scala_2.12-java11
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 2
+    healthcheck:
+      test: exit 0
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2
+        taskmanager.memory.network.max: 268435460b
+        taskmanager.memory.network.min: 268435460b
+        taskmanager.memory.network.fraction: .4
+        cluster.evenly-spread-out-slots: true
+    volumes:
+      - ./jars:/jars
+      - ./data:/data

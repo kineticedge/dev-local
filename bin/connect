@@ -1,0 +1,198 @@
+#!/bin/bash
+
+
+if ! [ -x "$(command -v jq)" ]; then
+    echo ""
+    echo "jq is not found, please install and make it available on your path, https://stedolan.github.io/jq"
+    echo ""
+    exit
+fi
+
+CONNECT_URL="http://localhost:18083"
+
+ACCEPT="Accept:application/json"
+CONTENT_TYPE="Content-Type:application/json"
+
+if [ $# -eq 1  ]; then
+  case "$1" in
+    available)
+      curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X GET ${CONNECT_URL}/connector-plugins 2>&1 >/dev/null
+      [ $? -ne 0 ] && exit 1
+      exit 0
+      ;;
+    plugins)
+      curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X GET ${CONNECT_URL}/connector-plugins | jq 'sort_by(.)'
+      exit
+      ;;
+    connectors)
+      curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X GET ${CONNECT_URL}/connectors | jq  'sort_by(.)'
+      exit
+      ;;
+  esac
+fi
+
+
+if [ $# -lt 2 ]; then
+  echo ""
+  echo "Usage: "
+  echo "      $0 {available|plugins|connectors}"
+  echo "      $0 {create|pause|resume|delete|status|validate} name"
+  echo ""
+  exit
+fi
+
+OPERATION=$1
+shift
+
+NAME=$1
+shift
+
+
+if [[ $NAME == *.json ]]; then
+  NAME=${NAME%.*} 
+fi
+
+CONFIG=./${NAME}.json
+
+if [[ ( $OPERATION == "create" || $OPERATION == "update" ) && ! -f ${CONFIG}  ]]; then
+  echo "Usage: $0 {get|create|update|pause|resume|delete|status|validate} name"
+  echo ""
+  echo " $0 ${command} requires a valid configuration, ./${NAME}.json does not exist"
+  echo ""
+#  exit
+fi
+
+cat ${CONFIG} | jq > /dev/null
+
+if [ $? -ne 0 ]; then
+  echo""
+  exit
+fi
+
+
+
+NAME=$(basename $NAME)
+
+echo ""
+echo "name        : $NAME"
+echo "config file : $CONFIG"
+echo ""
+
+if [ -f ${CONFIG} ]; then 
+
+PUT_DATA=$(cat < ${CONFIG})
+
+POST_DATA=$(cat <<EOF
+{
+    "name": "${NAME}",
+    "config":
+    $(cat < ${CONFIG})
+}
+EOF
+)
+
+fi
+
+
+
+#
+# validate that the connector.class provided in the connector is available within the connect cluster.
+#
+
+plugin=$(cat ${CONFIG} | jq -r '."connector.class"')
+
+declare -a plugins
+IFS=',' read -r -a plugins <<< "$(curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" http://localhost:18083/connector-plugins | jq -r '.[].class' | tr '\n' ',')"
+
+if [ ${#plugins[@]} -eq 0 ]; then
+  echo ""
+  echo "unable to get a list of plugins available within the connect cluster; API is not yet available."
+  echo ""
+  exit
+fi
+
+if [[ ! " ${plugins[*]} " =~ " ${plugin} " ]]; then
+  echo ""
+  echo "connector.class=${plugin} is not available in the connect cluster."
+  echo ""
+  exit  
+fi
+
+#if [[ " ${plugins[*]} " =~ " ${plugin} " ]]; then
+#  echo "success"
+#fi
+
+#
+
+
+
+
+
+get() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X GET ${CONNECT_URL}/connectors/${NAME} | jq
+}
+
+create() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X POST --data "${POST_DATA}" ${CONNECT_URL}/connectors | jq
+}
+
+update() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X PUT --data "${PUT_DATA}" ${CONNECT_URL}/connectors/${NAME}/config | jq
+}
+
+pause() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X PUT ${CONNECT_URL}/connectors/${NAME}/pause 
+}
+
+resume() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X PUT ${CONNECT_URL}/connectors/${NAME}/resume 
+}
+
+delete() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X DELETE ${CONNECT_URL}/connectors/${NAME} | jq
+}
+
+status() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X GET ${CONNECT_URL}/connectors/${NAME}/status | jq
+}
+
+validate() {
+  curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X PUT ${CONNECT_URL}/connector-plugins/$1/config/validate/ --data "$(cat < ${CONFIG})" | jq
+}
+
+case "${OPERATION}" in
+  get)
+    get
+    ;;
+  create)
+    create
+    ;;
+  update)
+    update
+    ;;
+  pause)
+    pause
+    ;;
+  resume)
+    resume
+    ;;
+  delete)
+    delete
+    ;;
+  status)
+    status
+    ;;
+  validate)
+    CONNECTOR_CLASS=$(cat ${CONFIG} | jq -r '."connector.class"')
+    CONNECTOR=${CONNECTOR_CLASS##*.}
+    validate ${CONNECTOR}
+    ;;
+  recreate)
+    delete
+    create
+    ;;
+  *)
+    echo "Usage: $0 {create|pause|resume|delete|status|validate} name"
+esac
+
+echo ""

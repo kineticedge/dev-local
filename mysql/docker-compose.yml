@@ -1,0 +1,34 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  mysql: {}
+
+services:
+  mysql:
+    platform: ${PLATFORM}
+    image: ${IMAGE}
+    hostname: mysql
+    container_name: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: exit 0
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./cnf/local.cnf:/etc/mysql/conf.d/local.cnf
+      - ./init.d:/docker-entrypoint-initdb.d
+      - ./data:/data
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpw
+

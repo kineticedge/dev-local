@@ -1,0 +1,95 @@
+# Java tuning
+DRUID_XMS=1g
+DRUID_XMX=1g
+DRUID_MAXNEWSIZE=250m
+DRUID_NEWSIZE=250m
+DRUID_MAXDIRECTMEMORYSIZE=6172m
+ 
+druid_emitter_logging_logLevel=debug
+
+#druid_extensions_loadList="[\"druid-kafka-indexing-service\", \"druid-histogram\", \"druid-datasketches\", \"druid-lookups-cached-global\", \"postgresql-metadata-storage\", \"kafka-emitter\", \"druid-avro-extensions\", \"druid-parquet-extensions\", \"druid-protobuf-extensions\"]"
+druid_extensions_loadList="[\"druid-kafka-indexing-service\", \"druid-histogram\", \"druid-datasketches\", \"druid-lookups-cached-global\", \"postgresql-metadata-storage\", \"kafka-emitter\", \"druid-avro-extensions\", \"druid-parquet-extensions\", \"druid-protobuf-extensions\", \"druid-s3-extensions\"]"
+
+
+
+#druid_extensions_loadList="[\"druid-kafka-indexing-service\", \"druid-histogram\", \"druid-datasketches\", \"druid-lookups-cached-global\", \"postgresql-metadata-storage\", \"kafka-emitter\", \"druid-avro-extensions\", \"druid-parquet-extensions\", \"prometheus-emitter\"]"
+#druid_extensions_loadList=[\"druid-kafka-indexing-service\", \"druid-histogram\", \"druid-datasketches\", \"druid-lookups-cached-global\", \"postgresql-metadata-storage\", \"kafka-emitter\"]
+#druid_extensions_loadList=[\"druid-kafka-indexing-service\", \"druid-histogram\", \"druid-datasketches\", \"druid-lookups-cached-global\", \"postgresql-metadata-storage\", \"druid-google-extensions\"]
+#druid_extensions_loadList=[\"druid-kafka-indexing-service\", \"druid-histogram\", \"druid-datasketches\", \"druid-lookups-cached-global\", \"postgresql-metadata-storage\", \"druid-s3-extensions\", \"druid-google-extensions\"]
+
+
+
+druid_zk_service_host=druid-zookeeper
+
+druid_metadata_storage_host=
+druid_metadata_storage_type=postgresql
+druid_metadata_storage_connector_connectURI=jdbc:postgresql://druid-postgres:5432/druid
+druid_metadata_storage_connector_user=druid
+druid_metadata_storage_connector_password=FoolishPassword
+
+druid_coordinator_balancer_strategy=cachingCost
+
+druid_worker_capacity=9
+
+# if both are set, both get applied, and javaOpts will get applied first, and dockerized containers set this one, not the Array property.
+#druid_indexer_runner_javaOpts=""
+#druid_indexer_runner_javaOpts="-Xdebug -Xrunjdwp:transport=dt_socket,address=0.0.0.0:5001,suspend=y"
+
+druid_indexer_runner_javaOptsArray="[\"-server\", \"-Xmx512g\", \"-Xms256m\", \"-XX:MaxDirectMemorySize=3g\", \"-Duser.timezone=UTC\", \"-Dfile.encoding=UTF-8\", \"-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager\"]"
+
+#druid_indexer_runner_javaOptsArray="[\"-server\", \"-Xmx512g\", \"-Xms256m\", \"-XX:MaxDirectMemorySize=3g\", \"-Duser.timezone=UTC\", \"-Dfile.encoding=UTF-8\", \"-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager\", \"-Xdebug\", \"-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5001\" ]"
+
+druid_indexer_fork_property_druid_processing_buffer_sizeBytes=268435456
+
+druid_storage_type=local
+druid_storage_storageDirectory=/opt/shared/segments
+druid_indexer_logs_type=file
+druid_indexer_logs_directory=/opt/shared/indexing-logs
+
+
+# 6 is too much for my local setup, ...
+druid_processing_numThreads=2
+druid_processing_numMergeBuffers=2
+
+# Druid Metrics Emitter - KAFKA
+druid_emitter=kafka
+druid_emitter_kafka_bootstrap_servers=broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092
+druid_emitter_kafka_metric_topic=druid-metric
+druid_emitter_kafka_alert_topic=druid-alert
+druid_emitter_kafka_producer_config="{\"max.block.ms\":10000}"
+
+# Druid Metrics Emitter - HTTP
+#druid_emitter=http
+#druid_emitter_http_recipientBaseUrl=http://druid-exporter:7071/druid
+
+# Druid Metrics Emitter - Kafka & HTTP
+#druid_emitter=composing
+#druid_emitter_composing_emitters="[\"http\", \"kafka\"]"
+
+# 3rd party
+#druid_emitter=prometheus
+#druid_emitter_prometheus_strategy=exporter
+#druid_emitter_prometheus_port=7071
+
+
+
+#druid.query.groupBy.maxOnDiskStorage=2
+#druid.query.groupBy.maxMergingDictionarySize=300000000
+druid_query_groupBy_maxOnDiskStorage=4
+druid_query_groupBy_maxMergingDictionarySize=300000000
+
+DRUID_LOG4J="<?xml version=\"1.0\" encoding=\"UTF-8\" ?><Configuration status=\"WARN\"><Appenders><Console name=\"Console\" target=\"SYSTEM_OUT\"><PatternLayout pattern=\"%d{ISO8601} %p [%t] %c - %m%n\"/></Console></Appenders><Loggers><Root level=\"info\"><AppenderRef ref=\"Console\"/></Root><Logger name=\"org.apache.druid.jetty.RequestLog\" additivity=\"false\" level=\"INFO\"><AppenderRef ref=\"Console\"/></Logger></Loggers></Configuration>"
+
+s3service_s3_endpoint=minio
+s3service_s3_endpoint_http_port=9000
+s3service_disable_dns_buckets=true
+s3service_https_only=false
+
+#druid_s3_accessKey=admin
+#druid_s3_secretKey=miniominio
+druid_s3_accessKey=druid
+druid_s3_secretKey=druid_secret
+druid_s3_protocol=http
+druid_s3_endpoint_url=http://minio:9000
+druid_s3_enablePathStyleAccess=true
+#druid_s3_forceGlobalBucketAccessEnabled=true

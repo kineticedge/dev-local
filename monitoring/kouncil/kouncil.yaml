@@ -1,0 +1,16 @@
+kouncil:
+  clusters:
+    - name: kafka
+      brokers:
+        - host: broker-1
+          port: 9092
+          jmxPort: 7071
+        - host: broker-2
+          port: 9092
+          jmxPort: 7071
+        - host: broker-3
+          port: 9092
+          jmxPort: 7071
+        - host: broker-4
+          port: 9092
+          jmxPort: 7071

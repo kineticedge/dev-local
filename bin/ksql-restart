@@ -1,0 +1,124 @@
+#!/bin/sh
+
+#
+# 'compose' is now a command built into Docker Desktop, use that is avaiable, other default to docker-compose script.
+#
+
+docker compose --help | grep -e "^Docker Compose$" 2>&1 >/dev/null
+if [ $? -eq 0 ]; then
+ COMPOSE="docker compose"
+else
+ COMPOSE="docker-compose"
+fi
+
+DIR=$(dirname $0)
+KSQLDB_DIR="${DIR}/../ksqlDB"
+KSQLDB_DOCKER_COMPOSE_FILE="${KSQLDB_DIR}/docker-compose.yml"
+CONTAINER=ksql-server
+
+usage() {
+  echo ""
+  echo "Usage: $0 {--eos|--alo|--kill|--shutdown|--restart}"
+  echo ""
+}
+
+if [[ $# -eq 0 ]] || [[ $# -gt 5 ]]; then
+  usage
+  exit
+fi
+
+
+for i in "$@"; do
+  case $i in
+    -e|--eos|--exactly-once)
+      eos=true
+      ;;
+    -a|--alo|--at-least-once)
+      alo=true
+      ;;
+    -k|--kill)
+      kill=true
+      ;;
+    -s|--shutdown)
+      shutdown=true
+      ;;
+    -r|--restart)
+      restart=true
+      ;;
+    *)
+      ;;
+  esac
+  shift
+done
+
+
+if [[ "$eos" == true ]] && [[ "$alo" == true ]]; then
+  usage
+  echo "        exactly_once (--eos, -e) and at_least_once (--alo, -a) are mutually exclusive"
+  echo ""
+  exit
+fi
+
+if [[ "$kill" == true ]] && [[ "$shutdown" == true ]]; then
+  usage
+  echo "        shutdown (--shutdown, -s) and kill (--kill, -k) are mutually exclusive"
+  echo ""
+  exit
+fi
+
+#
+# alter the processing guarantee before restarting/killing
+#
+
+if [[ "$eos" == true ]]; then
+  sed -I .bak -E "s/KSQL_KSQL_STREAMS_PROCESSING_GUARANTEE: (.*)/KSQL_KSQL_STREAMS_PROCESSING_GUARANTEE: exactly_once/" ${KSQLDB_DOCKER_COMPOSE_FILE}
+  echo ""
+  echo "docker-compose.yml updated for $CONTAINER, processing guarantee set to exactly_once"
+  echo ""
+elif [[ "$alo" == true ]]; then
+  sed -I .bak -E "s/KSQL_KSQL_STREAMS_PROCESSING_GUARANTEE: (.*)/KSQL_KSQL_STREAMS_PROCESSING_GUARANTEE: at_least_once/" ${KSQLDB_DOCKER_COMPOSE_FILE}
+  echo ""
+  echo "docker-compose.yml updated for $CONTAINER, processing guarantee set to at_least_once"
+  echo ""
+fi
+
+
+#
+# shutdown/kill
+#
+
+if [ "$CONTAINER" == "$(docker ps --format "{{.Names}}" | grep $CONTAINER)" ]; then
+  echo ""
+  docker exec -it -e COLUMNS="`tput cols`" -e LINES="`tput lines`" $CONTAINER sh -c "ps -f -g 1"
+  echo ""
+  if [[ "$kill" == true ]]; then
+    echo "killing $CONTAINER"
+    docker kill $CONTAINER
+  elif [[ "$shutdown" == true ]]; then
+    echo "shutting down $CONTAINER"
+    (cd $KSQLDB_DIR; $COMPOSE stop ksql-server)
+  else
+    echo "not shutting down or killing $CONTAINER" 
+  fi
+else
+  echo ""
+  if [ "$CONTAINER" == "$(docker ps -a --format "{{.Names}}" | grep $CONTAINER)" ]; then
+    echo "${CONTAINER} is already stopped."
+  else
+    echo "${CONTAINER} does not exist (it is not running or stopped)."
+  fi
+  echo ""
+fi
+
+
+# 
+# restart
+#
+
+if [[ "$restart" == true ]]; then
+  (cd $KSQLDB_DIR; $COMPOSE up -d ksql-server)
+else 
+  echo ""
+  echo "--restart not provided, container not restarted"
+  echo ""
+fi

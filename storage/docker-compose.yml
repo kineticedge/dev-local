@@ -1,0 +1,51 @@
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  minio: {}
+
+services:
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    hostname: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    volumes:
+      - minio:/data
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=miniominio
+      - MINIO_SKIP_CLIENT=no
+
+#  minio-create-buckets:
+#    image: minio/mc:latest
+#    depends_on:
+#        - minio
+#    entrypoint: >
+#        /bin/sh -c "
+#        /usr/bin/mc config host add minio http://minio:9000 admin miniominio --api s3v4;
+#        while ! /usr/bin/mc mb minio/public ; do echo 'waiting for minio'; sleep 1; done;
+#        /usr/bin/mc policy set download minio/public;
+#        exit 0;
+#        "
+
+  fake-gcs-server:
+    image: fsouza/fake-gcs-server:1.37.12
+    container_name: fake-gcs-server
+    hostname: fake-gcs-server
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./data/gcs:/data
+    command: -port 8001 -scheme https -external-url https://fake-gcs-server:8001

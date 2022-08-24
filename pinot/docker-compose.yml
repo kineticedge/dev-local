@@ -1,0 +1,104 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  zk: {}
+  zk_datalog: {}
+  zk_logs: {}
+  pinot_controller_configs: {}
+  pinot_controller_data: {}
+  pinot_broker_configs: {}
+  pinot_broker_data: {}
+  pinot_server_configs: {}
+  pinot_server_data: {}
+
+services:
+
+  pinot-zookeeper:
+    image: zookeeper:3.5.6
+    hostname: pinot-zookeeper
+    container_name: pinot-zookeeper
+    healthcheck:
+      test: echo ruok | nc -w 2 localhost 2181 | grep imok
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - zk:/data
+      - zk_datalog:/datalog
+      - zk_logs:/logs
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOO_4LW_COMMANDS_WHITELIST: "ruok,stat"
+
+  pinot-controller:
+    image: apachepinot/pinot:0.10.0
+    hostname: pinot-controller
+    container_name: pinot-controller
+    command: "StartController -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:9000/health || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      pinot-zookeeper:
+        condition: service_healthy
+    ports:
+      - "9000:9000"
+    volumes:
+      - pinot_controller_configs:/opt/pinot/configs
+      - pinot_controller_data:/opt/pinot/data
+    environment:
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms1G -Xmx4G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-controller.log"
+
+  pinot-broker:
+    image: apachepinot/pinot:0.10.0
+    hostname: pinot-broker
+    container_name: pinot-broker
+    command: "StartBroker -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:8099/health || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      pinot-controller:
+        condition: service_healthy
+    ports:
+      - "8099:8099"
+    volumes:
+      - pinot_broker_configs:/opt/pinot/configs
+      - pinot_broker_data:/opt/pinot/data
+    environment:
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx4G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-broker.log"
+
+  pinot-server:
+    image: apachepinot/pinot:0.10.0
+    hostname: pinot-server
+    container_name: pinot-server
+    command: "StartServer -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    healthcheck:
+      test: curl --fail http://localhost:8097/health || exit 1
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      pinot-controller:
+        condition: service_healthy
+    volumes:
+      - pinot_server_configs:/opt/pinot/configs
+      - pinot_server_data:/opt/pinot/data
+    environment:
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log"

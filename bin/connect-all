@@ -1,0 +1,30 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+  echo ""
+  echo "Usage: "
+  echo "      $0 {create|pause|resume|delete|status|validate} directory"
+  echo ""
+  exit
+fi
+
+BIN_DIR=$(dirname $0)
+BASE_DIR=$(dirname $BIN_DIR)
+
+if [ $# -lt 1 ]; then
+  echo "usage: $0 {create|pause|resume|delete|status|validate} "
+  exit
+fi
+
+command=$1
+shift
+
+directory=$1
+shift
+
+declare -a connectors=($(ls $directory/*.json))
+
+for i in "${connectors[@]}"; do
+  ${BIN_DIR}/connect $command $i
+done
+

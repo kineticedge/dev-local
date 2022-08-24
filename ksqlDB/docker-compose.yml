@@ -1,0 +1,97 @@
+networks:
+  default:
+    external: true
+    name: dev-local
+
+services:
+
+## you can use ksql installed locally, just keep in mind it could be a different version 
+## as confluent installs ksql versioned as as part of confluent's versioning, not ksqldb's versioning
+##  ksql-cli:
+##    image: confluentinc/ksqldb-cli:${VERSION}
+##    hostname: ksql-cli
+##    container_name: ksql-cli
+##    depends_on:
+##      - ksql-server
+##    entrypoint: /bin/sh
+##    tty: true
+
+  ksql-server:
+    image: confluentinc/cp-ksqldb-server:${VERSION}
+    hostname: ksql-server
+    container_name: ksql-server
+    healthcheck:
+      test: curl -f http://localhost:8088/healthcheck || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    ports:
+      - '8088:8088'
+    volumes:
+      - ./jmx_prometheus:/opt/jmx_prometheus
+      - ./ext:/etc/ksqldb/ext
+    environment:
+      KSQL_HOST_NAME: ksql-server
+      KSQL_LISTENERS: "http://0.0.0.0:8088"
+      KSQL_APPLICATION_ID: "ksql-server"
+      KSQL_UDFS_ENABLED: "true"
+      KSQL_KSQL_EXTENSION_DIR: "/etc/ksqldb/ext"
+      KSQL_KSQL_METRICS_RECORDING_LEVEL_CONFIG: TRACE
+      #KSQL_BOOTSTRAP_SERVERS: "broker-1-lb:9094,broker-2-lb:9094,broker-3-lb:9094,broker-4-lb:9094"
+      KSQL_BOOTSTRAP_SERVERS: "broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092"
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+      KSQL_CACHE_MAX_BYTES_BUFFERING: 0
+      KSQL_LOG4J_ROOT_LOGLEVEL: DEBUG
+      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: broker-1:9092,broker-2:9092,broker-3:9092
+      #KSQL_LOG4J_PROCESSING_LOG_TOPIC: <ksql-processing-log-topic-name>
+      #KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: <ksql-processing-log-topic-name>
+      KSQL_TOOLS_LOG4J_LOGLEVEL: DEBUG
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_PRODUCER_INTERCEPTOR_CLASSES:
+      KSQL_CONSUMER_INTERCEPTOR_CLASSES:
+      KSQL_KSQL_FAIL_ON_DESERIALIZATION_ERROR: "true"
+      KSQL_KSQL_STREAMS_COMMIT_INTERVAL_MS: 8000
+      KSQL_KSQL_STREAMS_PROCESSING_GUARANTEE: at_least_once
+      KSQL_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/streams-config.yml
+
+#  ksql-server-2:
+#    image: confluentinc/cp-ksqldb-server:${VERSION}
+#    hostname: ksql-server-2
+#    container_name: ksql-server-2
+#    healthcheck:
+#      test: curl -f http://localhost:8088/healthcheck || exit 1
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+#      start_period: 60s
+#    volumes:
+#      - ./jmx_prometheus:/opt/jmx_prometheus
+#      - ./ext:/etc/ksqldb/ext
+#    environment:
+#      KSQL_HOST_NAME: ksql-server
+#      KSQL_LISTENERS: "http://0.0.0.0:8088"
+#      KSQL_APPLICATION_ID: "ksql-server"
+#      KSQL_UDFS_ENABLED: "true"
+#      KSQL_KSQL_EXTENSION_DIR: "/etc/ksqldb/ext"
+#      KSQL_KSQL_METRICS_RECORDING_LEVEL_CONFIG: TRACE
+#      #KSQL_BOOTSTRAP_SERVERS: "broker-1-lb:9094,broker-2-lb:9094,broker-3-lb:9094,broker-4-lb:9094"
+#      KSQL_BOOTSTRAP_SERVERS: "broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092"
+#      KSQL_KSQL_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+#      KSQL_CACHE_MAX_BYTES_BUFFERING: 0
+#      KSQL_LOG4J_ROOT_LOGLEVEL: DEBUG
+#      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+#      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: broker-1:9092,broker-2:9092,broker-3:9092
+#      #KSQL_LOG4J_PROCESSING_LOG_TOPIC: <ksql-processing-log-topic-name>
+#      #KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: <ksql-processing-log-topic-name>
+#      KSQL_TOOLS_LOG4J_LOGLEVEL: DEBUG
+#      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+#      KSQL_PRODUCER_INTERCEPTOR_CLASSES:
+#      KSQL_CONSUMER_INTERCEPTOR_CLASSES:
+#      KSQL_KSQL_FAIL_ON_DESERIALIZATION_ERROR: "true"
+#      KSQL_KSQL_STREAMS_COMMIT_INTERVAL_MS: 8000
+#      KSQL_KSQL_STREAMS_PROCESSING_GUARANTEE: at_least_once
+#      KSQL_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/streams-config.yml

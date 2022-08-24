@@ -1,0 +1,175 @@
+   
+lowercaseOutputName: true
+lowercaseOutputLabelNames: true
+blacklistObjectNames:
+  # This will ignore the admin client metrics from KSQL server and will blacklist certain metrics
+  # that do not make sense for ingestion.
+  - "kafka.admin.client:*"
+  - "kafka.consumer:type=*,id=*"
+  - "kafka.producer:type=*,id=*"
+  - "kafka.producer:client-id=confluent.monitoring*,*"
+  - "kafka.*:type=kafka-metrics-count,*"
+rules:
+  - pattern: "java.lang<type=(.*)>"
+  - pattern: "kafka.connect<type=connector-metrics, connector=(.+)><>(.+): (.+)"
+    value: 1
+    name: kafka_connect_connector_metrics
+    labels:
+      connector: $1
+      $2: $3
+    type: UNTYPED
+  - pattern: "kafka.connect<type=(.+)><>([^:]+)"
+  - pattern: "kafka.connect<type=(.+), client-id=(.+)><>([^:]+)"
+  - pattern: "kafka.connect<type=(.+), connector=(.+), task=(.+)><>([^:]+)"
+
+kafka:
+  connect:connector=mysql-backup,type=connector-metrics:
+
+#- pattern: "kafka.connect<type=app-info, id=(.+)><>(.*): (.*)"
+#  name: kafka_server_app_info_$2
+#  labels:
+#    kafka_broker: "$1"
+#    kafka_version: "$3"
+#  value: 1
+## "kafka.schema.registry:type=app-info,id=*"
+#- pattern: "kafka.connect<type=app-info, client-id=(.+)><>(.+): (.+)"
+#  name: "kafka_connect_app_info"
+#  value: 1
+#  labels:
+#    client-id: "$1"
+#    $2: "$3"
+#  type: UNTYPED
+## kafka.connect:type=connect-worker-rebalance-metrics
+#- pattern: "kafka.connect<type=connect-worker-rebalance-metrics><>([^:]+)"
+#  name: "kafka_connect_connect_worker_rebalance_metrics_$1"
+## kafka.connect:type=connect-coordinator-metrics,client-id=*
+## kafka.connect:type=connect-metrics,client-id=*
+#- pattern: "kafka.connect<type=(.+), client-id=(.+)><>([^:]+)"
+#  name: kafka_connect_$1_$3
+#  labels:
+#    client_id: $2
+## kafka.connect:type=connect-worker-metrics
+#- pattern: "kafka.connect<type=connect-worker-metrics><>([^:]+)"
+#  name: kafka_connect_connect_worker_metrics_$1
+#  labels:
+#    connector: "aggregate"
+## kafka.connect:type=connect-worker-metrics,connector=*
+#- pattern: "kafka.connect<type=connect-worker-metrics, connector=(.+)><>([^:]+)"
+#  name: kafka_connect_connect_worker_metrics_$2
+#  labels:
+#    connector: $1
+## kafka.connect:type=connector-metrics,connector=*
+#- pattern: "kafka.connect<type=connector-metrics, connector=(.+)><>(.+): (.+)"
+#  value: 1
+#  name: kafka_connect_connector_metrics
+#  labels:
+#    connector: $1
+#    $2: $3
+#  type: UNTYPED
+## kafka.connect:type=*-task-metrics,*
+## kafka.connect:type=source-task-metrics,connector=*,task=*
+## kafka.connect:type=sink-task-metrics,connector=*,task=*
+## kafka.connect:type=connector-task-metrics,connector=*,task=*
+#- pattern: "kafka.connect<type=(.+)-task-metrics, connector=(.+), task=(\\d+)><>(.+): (.+)"
+#  name: kafka_connect_$1_task_metrics_$4
+#  labels:
+#    connector: "$2"
+#    task: "$3"
+## kafka.connect:type=task-error-metrics,*
+## kafka.connect:type=task-error-metrics,connector=*,task=*
+#- pattern: "kafka.connect<type=task-error-metrics, connector=(.+), task=(\\d+)><>([^:]+)"
+#  name: kafka_connect_task_error_metrics_$3
+#  labels:
+#    connector: "$1"
+#    task: "$2"
+## confluent.replicator:type=confluent-replicator-task-metrics,* : confluent-replicator-task-topic-partition-*: Number Values
+#- pattern: "confluent.replicator<type=confluent-replicator-task-metrics, confluent-replicator-(.*)=(.+), confluent-replicator-(.+)=(.+), confluent-replicator-(.+)=(.+), confluent-replicator-(.+)=(.+)><>confluent-replicator-task-topic-partition-(.*): (.*)"
+#  name: confluent_replicator_task_metrics_$9
+#  labels:
+#    $1: "$2"
+#    $3: "$4"
+#    $5: "$6"
+#    $7: "$8"
+## confluent.replicator:type=confluent-replicator-task-metrics,* : Strings
+#- pattern: "confluent.replicator<type=confluent-replicator-task-metrics, confluent-replicator-(.*)=(.+), confluent-replicator-(.+)=(.+), confluent-replicator-(.+)=(.+), confluent-replicator-(.+)=(.+)><>(confluent-replicator-destination-cluster|confluent-replicator-source-cluster|confluent-replicator-destination-topic-name): (.*)"
+#  name: confluent_replicator_task_metrics_info
+#  value: 1
+#  labels:
+#    $1: "$2"
+#    $3: "$4"
+#    $5: "$6"
+#    $7: "$8"
+#    $9: "$10"
+## "kafka.consumer:type=app-info,client-id=*"
+## "kafka.producer:type=app-info,client-id=*"
+#- pattern: "kafka.(.+)<type=app-info, client-id=(.+)><>(.+): (.+)"
+#  value: 1
+#  name: kafka_$1_app_info
+#  labels:
+#    client_type: $1
+#    client_id: $2
+#    $3: $4
+#  type: UNTYPED
+## "kafka.consumer:type=consumer-metrics,client-id=*, protocol=*, cipher=*"
+## "kafka.consumer:type=type=consumer-fetch-manager-metrics,client-id=*, topic=*, partition=*"
+## "kafka.producer:type=producer-metrics,client-id=*, protocol=*, cipher=*"
+#- pattern: "kafka.(.+)<type=(.+), (.+)=(.+), (.+)=(.+), (.+)=(.+)><>(.+):"
+#  name: kafka_$1_$2_$9
+#  type: GAUGE
+#  labels:
+#    client_type: $1
+#    $3: "$4"
+#    $5: "$6"
+#    $7: "$8"
+## "kafka.consumer:type=consumer-node-metrics,client-id=*, node-id=*"
+## "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=*, topic=*"
+## "kafka.producer:type=producer-node-metrics,client-id=*, node-id=*"
+## "kafka.producer:type=producer-topic-metrics,client-id=*, topic=*"
+#- pattern: "kafka.(.+)<type=(.+), (.+)=(.+), (.+)=(.+)><>(.+):"
+#  name: kafka_$1_$2_$7
+#  type: GAUGE
+#  labels:
+#    client_type: $1
+#    $3: "$4"
+#    $5: "$6"
+## "kafka.consumer:type=consumer-fetch-manager-metrics,client-id=*"
+## "kafka.consumer:type=consumer-metrics,client-id=*"
+## "kafka.producer:type=producer-metrics,client-id=*"
+#- pattern: "kafka.(.+)<type=(.+), (.+)=(.+)><>(.+):"
+#  name: kafka_$1_$2_$5
+#  type: GAUGE
+#  labels:
+#    client_type: $1
+#    $3: "$4"
+#- pattern: "kafka.(.+)<type=(.+)><>(.+):"
+#  name: kafka_$1_$2_$3
+#  labels:
+#    client_type: $1
+
+
+#             kafka.connect:client-id=connect-1,node-id=node--3,type=connect-node-metrics
+#             kafka.connect:client-id=connect-1,node-id=node-2147483646,type=connect-node-metrics
+#             kafka.connect:client-id=connect-1,type=app-info
+#             kafka.connect:client-id=connect-1,type=connect-coordinator-metrics
+#             kafka.connect:client-id=connect-1,type=connect-metrics
+#             kafka.connect:client-id=connect-1,type=kafka-metrics-count
+#             kafka.connect:connector=store,task=0,type=connector-task-metrics
+#             kafka.connect:connector=store,task=0,type=source-task-metrics
+#             kafka.connect:connector=store,task=0,type=task-error-metrics
+#             kafka.connect:connector=store,type=connect-worker-metrics
+#             kafka.connect:connector=store,type=connector-metrics
+#             kafka.connect:id="connect-1:8083",type=app-info
+#             kafka.connect:id=connect-1,type=app-info
+#             kafka.connect:type=app-info
+#             kafka.connect:type=connect-worker-metrics
+#             kafka.connect:type=connect-worker-rebalance-metrics
+#             kafka.connect:type=kafka-metrics-count
+
+
+
+
+
+
+
+
+
