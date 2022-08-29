@@ -24,7 +24,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
-      start_period: 20s
+      start_period: 15s
     volumes:
       - c1_kafka_data:/var/lib/kafka/data
       - c1_kafka_secrets:/etc/kafka/secrets
@@ -53,7 +53,7 @@ services:
       CONNECT_INTERNAL_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
       CONNECT_INTERNAL_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
       CONNECT_REST_ADVERTISED_HOST_NAME: 'connect-1'
-      CONNECT_PLUGIN_PATH: /etc/kafka-connect/jars,/usr/share/java
+      CONNECT_PLUGIN_PATH: /etc/kafka-connect/jars
       CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/connect-config.yml
 
@@ -68,7 +68,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
-      start_period: 20s
+      start_period: 15s
     volumes:
       - c2_kafka_data:/var/lib/kafka/data
       - c2_kafka_secrets:/etc/kafka/secrets
@@ -97,45 +97,6 @@ services:
       CONNECT_INTERNAL_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
       CONNECT_INTERNAL_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
       CONNECT_REST_ADVERTISED_HOST_NAME: 'connect-2'
-      CONNECT_PLUGIN_PATH: /etc/kafka-connect/jars,/usr/share/java
+      CONNECT_PLUGIN_PATH: /etc/kafka-connect/jars
       CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/connect-config.yml
-
-#  connect-3:
-#    platform: ${PLATFORM}
-#    image: confluentinc/cp-kafka-connect:${VERSION}
-#    hostname: connect-3
-#    container_name: connect-3
-#    ports:
-#      - "38083:8083"
-#    volumes:
-#      - c2_kafka_data:/var/lib/kafka/data
-#      - c2_kafka_secrets:/etc/kafka/secrets
-#      - ./jmx_prometheus:/opt/jmx_prometheus
-#      - ./jars:/etc/kafka-connect/jars
-#      - ./data:/data
-#      - ./secrets:/etc/kafka-connect/secrets
-#    environment:
-#      #CONNECT_BOOTSTRAP_SERVERS: 'broker-1-lb:9094,broker-2-lb:9094,broker-3-lb:9094,broker-4-lb:9094'
-#      CONNECT_BOOTSTRAP_SERVERS: 'broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092'
-#      CONNECT_CONNECTOR_CLIENT_CONFIG_OVERRIDE_POLICY: All
-#      CONNECT_REST_PORT: 8083
-#      CONNECT_GROUP_ID: 'connect-cluster'
-#      CONNECT_CONFIG_STORAGE_TOPIC: 'connect-cluster-config'
-#      CONNECT_OFFSET_STORAGE_TOPIC: 'connect-cluster-offsets'
-#      CONNECT_STATUS_STORAGE_TOPIC: 'connect-cluster-status'
-#      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 3
-#      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 3
-#      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 3
-#      CONNECT_CONFIG_PROVIDERS: file
-#      CONNECT_CONFIG_PROVIDERS_FILE_CLASS: 'org.apache.kafka.common.config.provider.FileConfigProvider'
-#      CONNECT_KEY_CONVERTER: 'io.confluent.connect.avro.AvroConverter'
-#      CONNECT_VALUE_CONVERTER: 'io.confluent.connect.avro.AvroConverter'
-#      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-#      CONNECT_INTERNAL_KEY_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
-#      CONNECT_INTERNAL_VALUE_CONVERTER: 'org.apache.kafka.connect.json.JsonConverter'
-#      CONNECT_REST_ADVERTISED_HOST_NAME: 'connect-3'
-#      CONNECT_PLUGIN_PATH: /etc/kafka-connect/jars,/usr/share/java
-#      CONNECT_LOG4J_ROOT_LOGLEVEL: INFO
-#      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/connect-config.yml

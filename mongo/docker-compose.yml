@@ -42,8 +42,14 @@ services:
     hostname: mongo-express
     ports:
       - 28081:8081
+    healthcheck:
+      test: wget --spider http://localhost:8081/ || exit 1
+      interval: 10s
+      start_period: 20s
     environment:
       #ME_CONFIG_MONGODB_SERVER: ''
       ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: mongo
+      #ME_CONFIG_BASICAUTH_USERNAME: admin
+      #ME_CONFIG_BASICAUTH_PASSWORD: mongo-express

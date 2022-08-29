@@ -16,6 +16,22 @@
 * Go to Confluent's [get-started](https://www.confluent.io/get-started), select the **here** link (javascript so I cannot deep link it) 
   in the Download Confluent Platform section to get the download for community edition.
 
+  * On A Mac M1 Laptop, Java 17 or later is needed. The `KSQL_JVM_PERFORMANCE_OPTS` as deprecated settings, if you run into issues
+
+  * `/usr/local/confluent/ksql-run-class`
+  
+    replace
+   
+    ```shell
+    KSQL_JVM_PERFORMANCE_OPTS="-server -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+ExplicitGCInvokesConcurrent -XX:NewRatio=1 -Djava.awt.headless=true"
+    ```
+    
+    with
+
+     ```shell
+    KSQL_JVM_PERFORMANCE_OPTS="-server -XX:+ExplicitGCInvokesConcurrent -XX:NewRatio=1 -Djava.awt.headless=true"
+    ```
+  
 * Projects are being added to allow for a rich set of applications to be used in a local environment.
 Some are still incubating, some are well tested.
 
