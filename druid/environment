@@ -29,7 +29,7 @@ druid_metadata_storage_connector_password=FoolishPassword
 
 druid_coordinator_balancer_strategy=cachingCost
 
-druid_worker_capacity=9
+druid_worker_capacity=13
 
 # if both are set, both get applied, and javaOpts will get applied first, and dockerized containers set this one, not the Array property.
 #druid_indexer_runner_javaOpts=""
