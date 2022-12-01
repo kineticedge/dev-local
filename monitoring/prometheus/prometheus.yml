@@ -6,6 +6,9 @@ scrape_configs:
     #scrape_interval: 1s
     static_configs:
       - targets:
+        - controller-0:7071
+        - controller-1:7071
+        - controller-2:7071
         - broker-1:7071
         - broker-2:7071
         - broker-3:7071
@@ -23,8 +26,6 @@ scrape_configs:
     static_configs:
       - targets:
           - schema-registry:7071
-          - connect-2:7071
-          - connect-3:7071
         labels:
           cluster_type: "schema-registry"
           cluster_id: "schema-registry"
