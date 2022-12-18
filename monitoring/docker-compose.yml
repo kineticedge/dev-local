@@ -70,7 +70,7 @@ services:
     command: --kafka.server=broker-1:9092 --kafka.server=broker-2:9092 --kafka.server=broker-3:9092
 
   kowl:
-    image: quay.io/cloudhut/kowl:v1.5.0
+    image: docker.redpanda.com/vectorized/console:v2.1.1
     hostname: kowl
     container_name: kowl
     healthcheck:
@@ -83,10 +83,12 @@ services:
       - ./kowl/config.yaml:/etc/kowl/config.yaml
     ports:
       - "9000:8080"
-    entrypoint: ./kowl --config.filepath=/etc/kowl/config.yaml
+    environment:
+      - KAFKA_BROKERS=broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092
+
 
   kafka-ui:
-    image: provectuslabs/kafka-ui:0.3.3
+    image: provectuslabs/kafka-ui:v0.4.0
     container_name: kafka-ui
     healthcheck:
       test: curl --fail http://localhost:8080/ || exit 1
@@ -106,7 +108,7 @@ services:
       - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
 
   kouncil:
-    image: consdata/kouncil:1.0
+    image: consdata/kouncil:1.4
     container_name: kouncil
     volumes:
       - ./kouncil/kouncil.yaml:/config/kouncil.yaml
