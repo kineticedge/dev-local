@@ -105,19 +105,19 @@ images and use the following:
 
   * provides a postgres database, with the write-ahead log (wal) enabled for change-data-capture from Debezium.
 
-  * see Debeizum connector in connectors for accessing data with CDC.
+  * see Debezium connector in connectors for accessing data with CDC.
 
 # mysql
 
  * provides a MySQL v8 database, bin-log enabled by default with v8.
   
- * see Debeizum connector in connectors for accessing data with CDC.
+ * see Debezium connector in connectors for accessing data with CDC.
 
 # mysql5
 
   * provides a MySQL v5 database with bin-log enabled
 
-  * see Debeizum connector in connectors for accessing data with CDC.
+  * see Debezium connector in connectors for accessing data with CDC.
 
 # mongo
 
