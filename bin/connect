@@ -52,7 +52,7 @@ if [[ $NAME == *.json ]]; then
   NAME=${NAME%.*} 
 fi
 
-CONFIG=./${NAME}.json
+CONFIG=${NAME}.json
 
 if [[ ( $OPERATION == "create" || $OPERATION == "update" ) && ! -f ${CONFIG}  ]]; then
   echo "Usage: $0 {get|create|update|pause|resume|delete|status|validate} name"

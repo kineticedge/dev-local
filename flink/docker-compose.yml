@@ -6,7 +6,7 @@ networks:
 
 services:
   jobmanager:
-    image: flink:1.15.0-scala_2.12-java11
+    image: flink:${VERSION}
     container_name: flink_jobmanager
     ports:
       - "48081:8081"
@@ -29,11 +29,13 @@ services:
       - ./data:/data
 
   taskmanager:
-    image: flink:1.15.0-scala_2.12-java11
+    image: flink:${VERSION}
     depends_on:
       - jobmanager
     command: taskmanager
-    scale: 2
+    #scale: 2
+    deploy:
+      replicas: 2
     healthcheck:
       test: exit 0
       interval: 15s
