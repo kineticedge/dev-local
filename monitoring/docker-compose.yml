@@ -82,13 +82,13 @@ services:
     volumes:
       - ./kowl/config.yaml:/etc/kowl/config.yaml
     ports:
-      - "9000:8080"
+      - "9100:8080"
     environment:
       - KAFKA_BROKERS=broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092
 
 
   kafka-ui:
-    image: provectuslabs/kafka-ui:v0.4.0
+    image: provectuslabs/kafka-ui:v0.5.0
     container_name: kafka-ui
     healthcheck:
       test: curl --fail http://localhost:8080/ || exit 1
@@ -99,13 +99,15 @@ services:
     volumes:
       - kafka-ui:/tmp
     ports:
-      - "9001:8080"
+      - "9101:8080"
     restart: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker-1:9092,broker-2:9092,broker-3:9092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
       - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
+      - KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME=connect
+      - KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS=http://connect-1:8083
 
   kouncil:
     image: consdata/kouncil:1.4
@@ -113,7 +115,7 @@ services:
     volumes:
       - ./kouncil/kouncil.yaml:/config/kouncil.yaml
     ports:
-      - "9002:8080"
+      - "9102:8080"
     environment:
       bootstrapServers: "broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092"
 
@@ -123,13 +125,13 @@ services:
     volumes:
       - ./akhq/application.yml:/app/application.yml
     ports:
-      - "9003:8080"
+      - "9103:8080"
 
   kafdrop:
     image: obsidiandynamics/kafdrop
     container_name: kafdrop
     ports:
-      - "9004:9000"
+      - "9104:9000"
     environment:
       KAFKA_BROKERCONNECT: broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092
 

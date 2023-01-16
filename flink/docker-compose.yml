@@ -20,13 +20,12 @@ services:
       retries: 30
       start_period: 0s
     command: jobmanager
+    volumes:
+      - ./jars:/jars
     environment:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-    volumes:
-      - ./jars:/jars
-      - ./data:/data
 
   taskmanager:
     image: flink:${VERSION}
@@ -42,6 +41,8 @@ services:
       timeout: 5s
       retries: 30
       start_period: 5s
+    volumes:
+      - ./data:/data
     environment:
       - |
         FLINK_PROPERTIES=
@@ -52,6 +53,3 @@ services:
         taskmanager.memory.network.min: 268435460b
         taskmanager.memory.network.fraction: .4
         cluster.evenly-spread-out-slots: true
-    volumes:
-      - ./jars:/jars
-      - ./data:/data

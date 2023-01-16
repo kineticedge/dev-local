@@ -9,7 +9,7 @@ volumes:
 
 services:
   postgres:
-    image: postgres:14.3
+    image: postgres:${VERSION}
     hostname: postgres
     container_name: postgres
     healthcheck:

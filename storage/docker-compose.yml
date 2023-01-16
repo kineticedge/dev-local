@@ -27,6 +27,7 @@ services:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=miniominio
       - MINIO_SKIP_CLIENT=no
+      - MINIO_REGION=us-east-1
 
 #  minio-create-buckets:
 #    image: minio/mc:latest

@@ -55,6 +55,13 @@ Some are still incubating, some are well tested.
   
   * Only one schema registry is provided, in an actual setup we would have 2 for high-availability reasons.
 
+# connect
+
+  * As of Kafka 2.6 (`confluent-community` 6.0) most of the bundled connectors were removed; this is great in that it allows
+  for easier upgrading of connectors w/out having to upgrade `connect`.
+
+  * Place the desired connectors (unzipped) into the ./jars directory.
+
 # monitoring
 
   * this is an optional set of containers to monitor the health of Kafka
@@ -70,12 +77,6 @@ Some are still incubating, some are well tested.
   * `kowl` and `kafka-ui` are provided for kafka exploration through a UI interface. I have not used `kafka-ui`, but
      looks promising. I enjoy using `kowl`. Other options to use would be `akhq`, `kafdrop` and `conduktor`.
   
-# connect
-
-  * As of Kafka 2.6 (`confluent-community` 6.0) most of the bundled connectors were removed; this is great in that it allows
-for easier upgrading of connectors w/out having to upgrade `connect`. 
-    
-  * Place the desired connectors (unzipped) into the ./jars directory. 
  
 # ksqlDB
 
@@ -91,15 +92,15 @@ images and use the following:
 
 # kafka-lb
 
- * ability to add a load-balancer in front of each broker. 
+  * ability to add a load-balancer in front of each broker. 
 
- * scripts to add network latency to each broker to test various scenarios 
+  * scripts to add network latency to each broker to test various scenarios 
 
- * see the "LB" advetised listener in the kafka docker-compose file for the port used for such setup
+  * see the "LB" advetised listener in the kafka docker-compose file for the port used for such setup
 
 # elasticsearch
 
- * provides elasticsearch and kabana containers
+  * provides elasticsearch and kabana containers
 
 # postgres
 
@@ -107,17 +108,23 @@ images and use the following:
 
   * see Debezium connector in connectors for accessing data with CDC.
 
+  * Standard port is exposed `5432` for easy integration into developers tools.
+
 # mysql
 
  * provides a MySQL v8 database, bin-log enabled by default with v8.
   
  * see Debezium connector in connectors for accessing data with CDC.
 
+  * Standard port is exposed `3306` for easy integration into developers tools.
+
 # mysql5
 
   * provides a MySQL v5 database with bin-log enabled
 
   * see Debezium connector in connectors for accessing data with CDC.
+
+  * Internal `3306` port exposed as `3307` to avoid conflics with `mysql` instance.
 
 # mongo
 
@@ -137,24 +144,34 @@ images and use the following:
   * A complete setup for running Druid. 
   Druid image is amd64, so running the provided image is rather slow. The `.env` is stood up for allowing different images, and building your own arm64 image is rather easy, details to come.
 
+  * Details (and referenced project) for building arm64 based images [druid-m1](https://www.kineticedge.io/blog/druid-m1/).
+
+  * All druid ports are exposed with prefixing with a `4`, such as coordinator's `8081` is `48081`.
+
 # pinot
 
   * this is a rather new container setup, but I have used to for a POC.
 
 # storage
 
-  * Minio as an s3 compliant object store.
+  * Minio is a s3 compliant object store. Great for testing s3 connectors locally.
 
 # flink
 
- * TBD
+  * 1 Job Manager
+
+    * Please uber-jars in `./jars` to make the accessible to the job manager for scheduling.
+ 
+    * Use `./data` folder for any output - easier to use for development and validation.
+
+  * 2 Task Managers, easily scaled with `deploy.replicas`.
 
 # oracle
 
- * provides an Oracle datbase with logminer enabled
+  * provides an Oracle datbase with logminer enabled
  
- * see kafka-connect-logminer in connectors for accessing data with CDC.
+  * see kafka-connect-logminer in connectors for accessing data with CDC.
  
- * the Oracle container must be built, see [README](./oracle/README.md).
+  * the Oracle container must be built, see [README](./oracle/README.md).
 
 

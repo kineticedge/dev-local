@@ -62,12 +62,14 @@ services:
       # LB is an optional listener that is fronted by an nginx loadbalancer allowing for testing cluster with artificial network latency.
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,LB:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-1:9092,PLAINTEXT_HOST://localhost:19092,LB://broker-1-lb:9094
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: false
+      #KAFKA_DELETE_TOPIC_ENABLE: false
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
@@ -98,12 +100,14 @@ services:
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,LB:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-2:9092,PLAINTEXT_HOST://localhost:29092,LB://broker-2-lb:9094
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: false
+      #KAFKA_DELETE_TOPIC_ENABLE: false
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
@@ -133,12 +137,14 @@ services:
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,LB:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-3:9092,PLAINTEXT_HOST://localhost:39092,LB://broker-3-lb:9094
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: false
+      #KAFKA_DELETE_TOPIC_ENABLE: false
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
@@ -168,12 +174,14 @@ services:
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,LB:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker-4:9092,PLAINTEXT_HOST://localhost:49092,LB://broker-4-lb:9094
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: false
+      #KAFKA_DELETE_TOPIC_ENABLE: false
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_MIN_INSYNC_REPLICAS: 2
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
@@ -203,7 +211,7 @@ services:
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
       SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: broker-1:9092,broker-2:9092,broker-3:9092
-      KAFKA_METRIC_REPORTERS: ' '
+      KAFKA_METRIC_REPORTERS:
       CONFLUENT_METRICS_ENABLE: 'false'
       EXTRA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/sr-config.yml
       SCHEMA_REGISTRY_OPTS  : -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/sr-config.yml
