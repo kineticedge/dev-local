@@ -1,0 +1,65 @@
+#!/bin/bash
+
+usage() {
+  echo ""
+  echo "Usage: $0 {schema|table} specification-file [specification-files]"
+  echo ""
+}
+
+if [ $# -lt 1 ]; then
+  usage
+  exit
+fi
+
+OPERATION=$1
+shift
+
+declare -a FILES=( "$@" )
+
+URL=http://localhost:9000
+
+CONTENT_TYPE_HDR='Content-Type:application/json'
+
+schema() {
+
+    DATA=$1
+    if [ ! -f "$DATA" ]; then
+      echo "skipping $DATA, file not found."
+      return
+    fi
+
+  curl -s -X POST -H $CONTENT_TYPE_HDR -d @$DATA $URL/schemas | jq
+}
+
+table() {
+
+    DATA=$1
+    if [ ! -f "$DATA" ]; then
+      echo "skipping $DATA, file not found."
+      return
+    fi
+
+  curl -s -X POST -H $CONTENT_TYPE_HDR -d @$DATA $URL/tables | jq
+}
+
+table_delete() {
+  curl -s -X DELETE -H $CONTENT_TYPE_HDR $URL/tables/$1 | jq
+}
+
+case "${OPERATION}" in
+  schema)
+    for i in "${FILES[@]}"; do
+      schema $i
+    done
+    ;;
+  table)
+    for i in "${FILES[@]}"; do
+      table $i
+    done
+    ;;
+  table_delete)
+    table_delete $1
+    ;;
+  *)
+    usage
+esac
