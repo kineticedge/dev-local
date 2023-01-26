@@ -12,5 +12,10 @@ sed -i '/cub zk-ready/d' /etc/confluent/docker/ensure
 #base64-encoded UUID
 CLUSTER_UUID=0000000000000000000000
 
+#
+# KafkaConfig.scala will complain if advertised.listeners is present, even if it is an empty string
+#
+echo "sed -i.bak '/advertised.listeners/d' /etc/kafka/kafka.properties" >> /etc/confluent/docker/ensure
+
 # KRaft required step: Format the storage directory with a new cluster ID
 echo "kafka-storage format --ignore-formatted --cluster-id=$CLUSTER_UUID -c /etc/kafka/kafka.properties" >> /etc/confluent/docker/ensure
