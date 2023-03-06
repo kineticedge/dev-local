@@ -95,6 +95,15 @@ scrape_configs:
         regex: '(.*):(.*)'
         target_label: instance
         replacement: '$1'
+  - job_name: flink
+    static_configs:
+      - targets:
+        - flink_jobmanager:7071
+        - dev-flink-taskmanager-1:7071
+        - dev-flink-taskmanager-2:7071
+        labels:
+          cluster_type: "flink"
+          cluster_id: "flink"
   - job_name: targets
     file_sd_configs:
       - files:
