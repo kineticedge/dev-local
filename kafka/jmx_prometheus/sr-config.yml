@@ -2,6 +2,7 @@
 lowercaseOutputName: true
 lowercaseOutputLabelNames: true
 whitelistObjectNames:
+  - java.lang:type=Runtime
   - kafka.schema.registry:type=jetty-metrics
   - kafka.schema.registry:type=jersey-metrics
   - kafka.schema.registry:type=app-info,id=*
@@ -28,6 +29,7 @@ blacklistObjectNames:
   # - "kafka.producer:client-id=confluent-license*,*"
   - "kafka.*:type=kafka-metrics-count,*"
 rules:
+  - pattern: java.lang<type=(.*)>
   # "kafka.schema.registry:type=jetty-metrics"
   - pattern: "kafka.schema.registry<type=jetty-metrics>([^:]+):"
     name: "kafka_schema_registry_jetty_metrics_$1"
