@@ -29,9 +29,8 @@ services:
       - kraft-ct0:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./controller.sh:/tmp/controller.sh
-    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_LISTENERS: CONTROLLER://:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -41,7 +40,7 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_NODE_ID: 10
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
 
   controller-1:
     image: confluentinc/cp-kafka:${VERSION}
@@ -58,9 +57,8 @@ services:
       - kraft-ct1:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./controller.sh:/tmp/controller.sh
-    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_LISTENERS: CONTROLLER://:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -70,7 +68,7 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_NODE_ID: 11
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
 
   controller-2:
     image: confluentinc/cp-kafka:${VERSION}
@@ -87,9 +85,8 @@ services:
       - kraft-ct2:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./controller.sh:/tmp/controller.sh
-    command: "bash -c '/tmp/controller.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_LISTENERS: CONTROLLER://:9093
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -99,7 +96,7 @@ services:
       KAFKA_NUM_PARTITIONS: 4
       KAFKA_NODE_ID: 12
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
 
 
   broker-1:
@@ -127,9 +124,8 @@ services:
       - kraft-bk1:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -143,7 +139,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
       KAFKA_METRIC_REPORTERS:
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-2:
@@ -171,9 +167,8 @@ services:
       - kraft-bk2:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 2
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -187,7 +182,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_METRIC_REPORTERS:
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-3:
@@ -215,9 +210,8 @@ services:
       - kraft-bk3:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 3
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -231,7 +225,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_METRIC_REPORTERS:
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
   broker-4:
@@ -259,9 +253,8 @@ services:
       - kraft-bk4:/var/lib/kafka/data
       - ./jmx_prometheus:/opt/jmx_prometheus
       - ./secrets:/etc/kafka/secrets
-      - ./broker.sh:/tmp/broker.sh
-    command: "bash -c '/tmp/broker.sh && /etc/confluent/docker/run'"
     environment:
+      CLUSTER_ID: "0000000000000000000000"
       KAFKA_NODE_ID: 4
       KAFKA_PROCESS_ROLES: broker
       KAFKA_SECURITY_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -275,7 +268,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 500
       KAFKA_METRIC_REPORTERS:
-      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-agent.jar=port=7072,host=*
+      KAFKA_OPTS: -javaagent:/opt/jmx_prometheus/jmx_prometheus_javaagent.jar=7071:/opt/jmx_prometheus/kafka-config.yml -javaagent:/opt/jmx_prometheus/jolokia-jvm.jar=port=7072,host=*
       CONFLUENT_METRICS_ENABLE: 'false'
 
 
