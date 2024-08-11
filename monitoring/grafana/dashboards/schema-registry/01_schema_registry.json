@@ -41,7 +41,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -89,7 +89,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": false,
           "expr": "count(kafka_schema_registry_registered_count{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"})",
@@ -105,7 +105,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -182,7 +182,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": true,
           "expr": "sum by(schema_type) (kafka_schema_registry_schemas_created{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"})",
@@ -197,7 +197,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -251,7 +251,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": false,
           "expr": "sum by(schema_type)(kafka_schema_registry_schemas_created{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"})",
@@ -267,7 +267,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -321,7 +321,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": false,
           "expr": "avg by(schema_type)(kafka_schema_registry_schemas_deleted{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"})",
@@ -337,7 +337,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -381,7 +381,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": false,
           "expr": "sum(kafka_schema_registry_registered_count{cluster_id=~\".*\", cluster_type=\"schema-registry\"})",
@@ -408,7 +408,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -487,7 +487,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": true,
           "expr": "kafka_schema_registry_jetty_metrics_connections_active{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"}",
@@ -502,7 +502,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -581,7 +581,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": true,
           "expr": "kafka_schema_registry_jersey_metrics_request_rate{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"}",
@@ -596,7 +596,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -675,7 +675,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": true,
           "expr": "kafka_schema_registry_jersey_metrics_request_latency_99{cluster_id=\"$cluster\", cluster_type=\"schema-registry\"}",
@@ -705,7 +705,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=\"schema-registry\"}, cluster_id)",
         "hide": 0,
@@ -736,7 +736,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=\"schema-registry\", cluster_id=\"$cluster\"}, instance)",
         "hide": 0,

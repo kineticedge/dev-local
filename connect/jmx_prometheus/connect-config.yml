@@ -5,8 +5,8 @@ blacklistObjectNames:
   # This will ignore the admin client metrics from KSQL server and will blacklist certain metrics
   # that do not make sense for ingestion.
   - "kafka.admin.client:*"
-  - "kafka.consumer:type=*,id=*"
-  - "kafka.producer:type=*,id=*"
+  #- "kafka.consumer:type=*,id=*"
+  #- "kafka.producer:type=*,id=*"
   - "kafka.producer:client-id=confluent.monitoring*,*"
   - "kafka.*:type=kafka-metrics-count,*"
 rules:

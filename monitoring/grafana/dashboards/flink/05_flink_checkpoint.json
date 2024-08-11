@@ -33,7 +33,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -110,7 +110,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "max(flink_jobmanager_job_lastCheckpointDuration{job=\"$job\"})",
           "instant": true,
@@ -131,7 +131,7 @@
       },
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fontSize": "80%",
@@ -159,7 +159,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_job_numberOfFailedCheckpoints{job=\"$job\"}",
           "instant": true,
@@ -170,7 +170,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_job_numberOfCompletedCheckpoints{job=\"$job\"}",
           "instant": true,
@@ -181,7 +181,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_job_numberOfInProgressCheckpoints{job=\"$job\"}",
           "instant": true,
@@ -201,7 +201,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -264,7 +264,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "max(flink_jobmanager_job_lastCheckpointDuration{job=\"$job\"})",
@@ -276,7 +276,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_job_numberOfInProgressCheckpoints{job=\"$job\"}",
           "interval": "",
@@ -326,7 +326,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fill": 0,
@@ -417,7 +417,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fill": 1,
@@ -460,7 +460,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "rate(flink_jobmanager_job_lastCheckpointSize{cluster_id=~\"$cluster\"}[2m])",
@@ -510,7 +510,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fill": 0,
@@ -552,7 +552,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "delta(flink_jobmanager_job_numberOfFailedCheckpoints{cluster_id=~\"$cluster\"}[2m])",
@@ -596,7 +596,7 @@
       }
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -613,7 +613,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(flink_jobmanager_job_uptime{cluster_type=\"flink\"}, cluster_id)",
         "hide": 0,

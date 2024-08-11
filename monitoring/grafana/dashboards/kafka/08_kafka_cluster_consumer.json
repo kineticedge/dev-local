@@ -36,7 +36,7 @@
       },
       "id": 15,
       "options": {
-        "content": "![](https://raw.githubusercontent.com/nbuesing/kafka-local/main/monitoring/static/consumer_request_metrics.png)",
+        "content": "![](https://raw.githubusercontent.com/kineticedge/dev-local/main/monitoring/static/consumer_request_metrics.png)",
         "mode": "markdown"
       },
       "pluginVersion": "8.4.0-46516pre",
@@ -51,7 +51,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -141,7 +141,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -207,7 +207,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -297,7 +297,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -387,7 +387,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -477,7 +477,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -566,7 +566,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -654,7 +654,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 34,
   "style": "dark",
   "tags": [
@@ -672,7 +672,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
         "hide": 0,
@@ -703,7 +703,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
         "hide": 0,
@@ -802,6 +802,7 @@
   },
   "timepicker": {
     "refresh_intervals": [
+      "2s",
       "5s",
       "10s",
       "30s",
@@ -827,8 +828,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "05 - Kafka Cluster - Consumer Metrics",
-  "uid": "05_kafka_cluster_consumer",
+  "title": "08 - Consumer Metrics",
+  "uid": "kafka_cluster_consumer",
   "version": 1,
   "weekStart": ""
 }

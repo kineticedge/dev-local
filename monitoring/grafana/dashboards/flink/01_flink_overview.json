@@ -33,7 +33,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -97,7 +97,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_numRegisteredTaskManagers",
           "format": "time_series",
@@ -115,7 +115,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -179,7 +179,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_taskSlotsAvailable",
           "format": "time_series",
@@ -197,7 +197,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -261,7 +261,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_numRunningJobs",
           "format": "time_series",
@@ -279,7 +279,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -343,7 +343,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_taskSlotsTotal",
           "format": "time_series",
@@ -379,7 +379,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "inPoolUsag",
           "fill": 1,
@@ -421,7 +421,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_Shuffle_Netty_Output_Buffers_inPoolUsage{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -470,7 +470,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "outPoolUsage",
           "fill": 1,
@@ -512,7 +512,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_Shuffle_Netty_Input_Buffers_outPoolUsage{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -561,7 +561,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "outputQueueLength",
           "fill": 1,
@@ -603,7 +603,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_Shuffle_Netty_Input_Buffers_outputQueueLength{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -652,7 +652,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "numRecordsOutPerSecond",
           "fill": 1,
@@ -694,7 +694,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_operator_numRecordsOutPerSecond{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -743,7 +743,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "umRecordsInPerSecond",
           "fill": 1,
@@ -785,7 +785,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_numRecordsInPerSecond{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -835,7 +835,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "inputQueueLength",
           "fill": 1,
@@ -877,7 +877,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_Shuffle_Netty_Output_Buffers_inputQueueLength{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -965,7 +965,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fill": 0,
       "fillGradient": 0,
@@ -1009,7 +1009,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "delta(flink_taskmanager_Status_JVM_GarbageCollector_G1_Old_Generation_Count[30s])",
           "format": "time_series",
@@ -1024,7 +1024,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "delta(flink_taskmanager_Status_JVM_GarbageCollector_G1_Young_Generation_Count[30s])",
           "format": "time_series",
@@ -1073,7 +1073,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fill": 0,
       "fillGradient": 0,
@@ -1114,7 +1114,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "delta(flink_taskmanager_Status_JVM_GarbageCollector_G1_Young_Generation_Time[30s])",
           "format": "time_series",
@@ -1128,7 +1128,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "delta(flink_taskmanager_Status_JVM_GarbageCollector_G1_Old_Generation_Time[30s])",
           "format": "time_series",
@@ -1177,7 +1177,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1218,7 +1218,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_Status_JVM_Threads_Count",
           "format": "time_series",
@@ -1231,7 +1231,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_taskmanager_Status_JVM_Threads_Count",
           "format": "time_series",
@@ -1305,7 +1305,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "offset commit failures to Kafka",
       "fill": 1,
@@ -1347,7 +1347,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "rate(flink_taskmanager_job_task_operator_commitsFailed{job_name=~\"$job_name\"}[2m])",
           "format": "time_series",
@@ -1393,7 +1393,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1434,7 +1434,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_taskmanager_job_task_operator_numLateRecordsDropped{job_name=~\"$job_name\"}",
           "format": "time_series",
@@ -1480,7 +1480,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "job-downtime",
       "fill": 1,
@@ -1522,7 +1522,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_job_downtime{job_name=~\"$job_name\"}",
           "format": "time_series",
@@ -1582,7 +1582,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "delayed write rate",
           "fill": 1,
@@ -1624,7 +1624,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "editorMode": "code",
               "expr": "flink_taskmanager_job_task_operator_counter_rocksdb_actual_delayed_write_rate{job_name=~\"$job_name\"}",
@@ -1676,7 +1676,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "entries in the unflushed immutable memtables.",
           "fill": 1,
@@ -1718,7 +1718,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_operator_counter_rocksdb_num_deletes_imm_mem_tables{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -1731,7 +1731,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_operator_counter_rocksdb_num_entries_imm_mem_tables{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -1779,7 +1779,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "background errors in RocksDB",
           "fill": 1,
@@ -1821,7 +1821,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_operator_counter_rocksdb_background_errors{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -1869,7 +1869,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "description": "unreleased snapshots",
           "fill": 1,
@@ -1911,7 +1911,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P1809F7CD0C75ACF3"
+                "uid": "prometheus"
               },
               "expr": "flink_taskmanager_job_task_operator_counter_rocksdb_num_snapshots{job_name=~\"$job_name\"}",
               "format": "time_series",
@@ -1966,7 +1966,7 @@
       "type": "row"
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -1983,7 +1983,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(flink_jobmanager_job_uptime{cluster_type=\"flink\"}, cluster_id)",
         "hide": 0,

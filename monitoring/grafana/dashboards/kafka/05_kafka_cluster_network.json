@@ -21,9 +21,10 @@
       }
     ]
   },
-  "description": "Flink - Kafka",
+  "description": "Apache Kafka resource usage and throughput",
   "editable": true,
   "fiscalYearStartMonth": 0,
+  "gnetId": 721,
   "graphTooltip": 0,
   "links": [],
   "liveNow": false,
@@ -33,6 +34,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -41,25 +43,27 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "records (in)",
+            "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 50,
-            "gradientMode": "opacity",
+            "fillOpacity": 10,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "smooth",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -68,7 +72,6 @@
               "mode": "off"
             }
           },
-          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -76,35 +79,39 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
               }
             ]
           },
-          "unit": "short"
+          "unit": "ops"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 12,
         "w": 12,
         "x": 0,
         "y": 0
       },
-      "id": 69,
+      "id": 41,
       "options": {
         "legend": {
           "calcs": [
-            "mean",
             "last"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "datasource": {
@@ -112,14 +119,16 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(label_replace(flink_taskmanager_job_task_operator_KafkaSourceReader_KafkaConsumer_records_consumed_rate{cluster_id=~\"$cluster\"}, \"source\", \"$1\", \"operator_name\", \"Source:_?([^_]*)_?([^_]*)_?(.*)\")) by (source)",
+          "exemplar": true,
+          "expr": "avg (kafka_server_socket_server_metrics_select_rate{cluster_id=~\"$cluster\", instance=~\"$instance\", listener=~\"$listener\"}) by (instance, listener)",
           "interval": "",
-          "legendFormat": "{{source}}",
+          "legendFormat": "{{instance}} ({{listener}})",
+          "queryType": "randomWalk",
           "range": true,
-          "refId": "C"
+          "refId": "A"
         }
       ],
-      "title": "KafkaSource (Consumer) - message (rate)",
+      "title": "IO Selection Rate",
       "type": "timeseries"
     },
     {
@@ -127,6 +136,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -135,37 +145,137 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "records (out)",
+            "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 50,
-            "gradientMode": "opacity",
+            "fillOpacity": 10,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
-              "mode": "normal"
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
-          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ns"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 42,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg (kafka_server_socket_server_metrics_io_time_ns_avg{cluster_id=~\"$cluster\", instance=~\"$instance\", listener=~\"$listener\"}) by (instance, listener)",
+          "interval": "",
+          "legendFormat": "{{instance}} ({{listener}})",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "IO Duration / Select Call",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "1 indicates that the broker is the bottleneck in relation to the clients.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -185,27 +295,27 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 14,
         "w": 12,
-        "x": 12,
-        "y": 0
+        "x": 0,
+        "y": 12
       },
-      "id": 68,
+      "id": 40,
       "options": {
         "legend": {
           "calcs": [
-            "mean",
             "last"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "datasource": {
@@ -213,20 +323,16 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(label_replace(flink_taskmanager_job_task_operator_KafkaProducer_record_send_rate{cluster_id=~\"$cluster\"}, \"sink\", \"$1 $2 $3\", \"operator_name\", \"Sink:_?([^_]*)_?([^_]*)_?(.*)\")) by (sink)",
+          "exemplar": true,
+          "expr": "avg (1 - kafka_server_socket_server_metrics_io_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", listener=~\"$listener\"} - kafka_server_socket_server_metrics_io_wait_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", listener=~\"$listener\"}) by (instance, listener)",
           "interval": "",
-          "legendFormat": "out {{sink}}",
+          "legendFormat": "{{instance}} ({{listener}})",
+          "queryType": "randomWalk",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "KafkaSink (Producer) - message (rate)",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {}
-        }
-      ],
+      "title": "1 - IO Ratio - IO Wait Ratio",
       "type": "timeseries"
     },
     {
@@ -234,6 +340,7 @@
         "type": "prometheus",
         "uid": "prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -242,25 +349,27 @@
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "bytes (rate)",
+            "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 50,
-            "gradientMode": "opacity",
+            "fillOpacity": 10,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "smooth",
+            "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": false,
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -269,105 +378,6 @@
               "mode": "off"
             }
           },
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
-      },
-      "id": 70,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "last"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      },
-      "YVersion": "9.3.0-85205pre",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
-          },
-          "editorMode": "code",
-          "expr": "sum(label_replace(flink_taskmanager_job_task_operator_KafkaSourceReader_KafkaConsumer_incoming_byte_rate{cluster_id=~\"$cluster\"}, \"source\", \"$1\", \"task_name\", \"Source:_?([^_]*)_?([^_]*)_?(.*)\")) by (source)",
-          "interval": "",
-          "legendFormat": "{{source}}",
-          "range": true,
-          "refId": "C"
-        }
-      ],
-      "title": "KafkaSource (Consumer) - byte (rate)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "records (out)",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 50,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -387,27 +397,27 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 12
       },
-      "id": 71,
+      "id": 38,
       "options": {
         "legend": {
           "calcs": [
-            "mean",
             "last"
           ],
           "displayMode": "table",
-          "placement": "right",
+          "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
+          "mode": "single",
+          "sort": "none"
         }
       },
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "datasource": {
@@ -415,31 +425,192 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum(label_replace(flink_taskmanager_job_task_operator_KafkaProducer_outgoing_byte_rate{cluster_id=~\"$cluster\"}, \"sink\", \"$1 $2 $3\", \"operator_name\", \"Sink:_?([^_]*)_?([^_]*)_?(.*)\")) by (sink)",
+          "exemplar": true,
+          "expr": "avg (kafka_server_socket_server_metrics_io_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", listener=~\"$listener\"}) by (instance, listener)",
           "interval": "",
-          "legendFormat": "out {{sink}}",
+          "legendFormat": "{{instance}} ({{listener}})",
+          "queryType": "randomWalk",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "KafkaSink (Producer) - byte (rate)",
-      "transformations": [
+      "title": "IO Ratio",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 19
+      },
+      "id": 39,
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.2.5",
+      "targets": [
         {
-          "id": "organize",
-          "options": {}
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "avg (kafka_server_socket_server_metrics_io_wait_ratio{cluster_id=~\"$cluster\", instance=~\"$instance\", listener=~\"$listener\"}) by (instance,listener)",
+          "interval": "",
+          "legendFormat": "{{instance}} ({{listener}})",
+          "queryType": "randomWalk",
+          "range": true,
+          "refId": "A"
         }
       ],
+      "title": "IO Wait Rate",
       "type": "timeseries"
     }
   ],
   "refresh": "2s",
-  "schemaVersion": 37,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "flink"
+    "kafka_cluster",
+    "kafka"
   ],
   "templating": {
     "list": [
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "kafka-core",
+          "value": "kafka-core"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "cluster",
+        "multi": false,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "query": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "instance",
+        "multi": false,
+        "name": "instance",
+        "options": [],
+        "query": {
+          "query": "label_values(jvm_info{cluster_type=\"kafka\", cluster_id=\"$cluster\"}, instance)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
       {
         "allValue": ".*",
         "current": {
@@ -451,14 +622,15 @@
           "type": "prometheus",
           "uid": "prometheus"
         },
-        "definition": "label_values(flink_jobmanager_job_uptime{cluster_type=\"flink\"}, cluster_id)",
+        "definition": "label_values(kafka_server_socket_server_metrics_select_rate{cluster_type=\"kafka\", cluster_id=\"$cluster\", instance=~\"$instance\"}, listener)",
         "hide": 0,
         "includeAll": true,
+        "label": "listener",
         "multi": false,
-        "name": "cluster",
+        "name": "listener",
         "options": [],
         "query": {
-          "query": "label_values(flink_jobmanager_job_uptime{cluster_type=\"flink\"}, cluster_id)",
+          "query": "label_values(kafka_server_socket_server_metrics_select_rate{cluster_type=\"kafka\", cluster_id=\"$cluster\", instance=~\"$instance\"}, listener)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -466,7 +638,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -474,7 +645,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1m",
     "to": "now"
   },
   "timepicker": {
@@ -505,8 +676,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "02 - Flink - Kafka",
-  "uid": "02_flink_kafka",
+  "title": "05 - Network",
+  "uid": "kafka_cluster_network",
   "version": 1,
   "weekStart": ""
 }

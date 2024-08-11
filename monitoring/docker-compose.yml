@@ -9,10 +9,9 @@ volumes:
   kafka-ui: {}
 
 services:
-
   prometheus:
     hostname: prometheus
-    image: prom/prometheus:v2.42.0
+    image: prom/prometheus:v2.47.2
     container_name: prometheus
     privileged: true
     healthcheck:
@@ -22,7 +21,7 @@ services:
       timeout: 5s
       retries: 3
     ports:
-      - '9090:9090'
+      - "9090:9090"
     volumes:
       - prometheus:/prometheus
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -42,7 +41,7 @@ services:
       prometheus:
         condition: service_healthy
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       GF_SECURITY_ADMIN_PASSWORD: grafana
       GF_AUTH_ANONYMOUS_ENABLED: "true"
@@ -66,8 +65,29 @@ services:
       timeout: 5s
       retries: 3
     ports:
-      - '9308:9308'
+      - "9308:9308"
     command: --kafka.server=broker-1:9092 --kafka.server=broker-2:9092 --kafka.server=broker-3:9092
+  kafka-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafka-ui
+    healthcheck:
+      test: curl --fail http://localhost:8080/ || exit 1
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - kafka-ui:/tmp
+    ports:
+      - "9101:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker-1:9092,broker-2:9092,broker-3:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
+      - KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME=connect
+      - KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS=http://connect-1:8083
 #
 #  kowl:
 #    image: docker.redpanda.com/vectorized/console:v2.1.1
@@ -86,28 +106,6 @@ services:
 #    environment:
 #      - KAFKA_BROKERS=broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092
 #
-#
-#  kafka-ui:
-#    image: provectuslabs/kafka-ui:v0.5.0
-#    container_name: kafka-ui
-#    healthcheck:
-#      test: curl --fail http://localhost:8080/ || exit 1
-#      start_period: 10s
-#      interval: 5s
-#      timeout: 5s
-#      retries: 3
-#    volumes:
-#      - kafka-ui:/tmp
-#    ports:
-#      - "9101:8080"
-#    restart: always
-#    environment:
-#      - KAFKA_CLUSTERS_0_NAME=local
-#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=broker-1:9092,broker-2:9092,broker-3:9092
-#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-#      - KAFKA_CLUSTERS_0_SCHEMAREGISTRY=http://schema-registry:8081
-#      - KAFKA_CLUSTERS_0_KAFKACONNECT_0_NAME=connect
-#      - KAFKA_CLUSTERS_0_KAFKACONNECT_0_ADDRESS=http://connect-1:8083
 #
 #  kouncil:
 #    image: consdata/kouncil:1.4
@@ -138,7 +136,7 @@ services:
 ##  druid-exporter:
 ##    image: druid-exporter:latest
 ##    container_name: druid-exporter
-##    command: 
+##    command:
 ##      - "conf/example_druid_v_0_17_0.json" -t druid-metric -b broker-1:9092,broker-2:9092,broker-3:9092,broker-4:9092 -g "druid-exporter"
 ##    ports:
 ##      - "9999:8000"

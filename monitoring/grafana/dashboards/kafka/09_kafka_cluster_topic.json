@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,14 +24,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "iteration": 1641073117138,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -66,8 +68,8 @@
         "y": 0
       },
       "id": 4,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -84,9 +86,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum(max(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"Size\", topic=~ '$topic'}) by (partition))",
           "format": "time_series",
           "instant": true,
@@ -101,7 +107,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -139,8 +145,8 @@
         "y": 0
       },
       "id": 32,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -157,9 +163,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "count(count(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"Size\", topic='$topic'}) by (partition))",
           "format": "time_series",
           "instant": true,
@@ -174,7 +184,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -213,8 +223,8 @@
         "y": 0
       },
       "id": 2,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -231,9 +241,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum(max(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}) by (partition)) - sum(max(kafka_log_log_value{name=\"LogStartOffset\", topic =~ \"$topic\"}) by (partition))",
           "format": "time_series",
           "instant": true,
@@ -247,7 +261,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -286,8 +300,8 @@
         "y": 0
       },
       "id": 6,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -304,12 +318,12 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "exemplar": false,
           "expr": "sum (max by(partition) (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}))",
@@ -327,7 +341,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -366,8 +380,8 @@
         "y": 0
       },
       "id": 34,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -384,9 +398,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum(kafka_log_log_value{cluster_id=~\"$cluster\", name=\"NumLogSegments\", topic=\"$topic\"})",
           "format": "time_series",
           "instant": true,
@@ -400,7 +418,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -439,8 +457,8 @@
         "y": 0
       },
       "id": 35,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -457,9 +475,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogEndOffset\", topic =~ \"$topic\"}) - sum (kafka_log_log_value{cluster_id=~\"$cluster\", name=\"LogStartOffset\", topic =~ \"$topic\"})",
           "format": "time_series",
           "instant": true,
@@ -475,7 +497,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -515,8 +537,8 @@
         "y": 3
       },
       "id": 14,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -533,9 +555,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"})",
           "format": "time_series",
           "instant": true,
@@ -549,7 +575,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -589,8 +615,8 @@
         "y": 3
       },
       "id": 22,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -607,9 +633,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"})",
           "format": "time_series",
           "instant": true,
@@ -623,7 +653,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -663,8 +693,8 @@
         "y": 3
       },
       "id": 24,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -681,9 +711,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic=\"${topic}\"})",
           "format": "time_series",
           "instant": true,
@@ -697,7 +731,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -706,6 +740,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Messages/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -717,7 +753,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -758,21 +794,27 @@
         "y": 5
       },
       "id": 8,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum (kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
           "intervalFactor": 2,
@@ -786,7 +828,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -795,6 +837,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Bytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -806,7 +850,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -847,25 +891,33 @@
         "y": 5
       },
       "id": 10,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
           "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{topic}}",
+          "range": true,
           "refId": "B"
         }
       ],
@@ -875,7 +927,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -884,6 +936,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Bytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -895,7 +949,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -936,21 +990,27 @@
         "y": 5
       },
       "id": 12,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
           "expr": "sum without(instance,job)(kafka_server_brokertopicmetrics_oneminuterate{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"})",
           "format": "time_series",
           "intervalFactor": 1,
@@ -964,7 +1024,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1004,8 +1064,8 @@
         "y": 12
       },
       "id": 26,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -1022,10 +1082,15 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic=\"${topic}\"}[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic=\"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1038,7 +1103,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1078,8 +1143,8 @@
         "y": 12
       },
       "id": 28,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -1096,10 +1161,15 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"}[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1112,7 +1182,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1152,8 +1222,8 @@
         "y": 12
       },
       "id": 30,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
@@ -1170,10 +1240,15 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.0-46516pre",
+      "pluginVersion": "9.5.0-105692pre",
       "targets": [
         {
-          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"}[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\",topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 10,
@@ -1186,7 +1261,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1195,6 +1270,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Messages/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1206,7 +1283,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1247,22 +1324,29 @@
         "y": 14
       },
       "id": 16,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"}[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"MessagesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1276,7 +1360,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1285,6 +1369,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Bytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1296,7 +1382,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1337,22 +1423,29 @@
         "y": 14
       },
       "id": 18,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"}[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesInPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1366,7 +1459,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1375,6 +1468,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Bytes/s",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -1386,7 +1481,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1427,22 +1522,29 @@
         "y": 14
       },
       "id": 20,
-    "interval" : "5s",
-    "links": [],
+      "interval": "5s",
+      "links": [],
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "bottom"
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.4.0-46516pre",
       "targets": [
         {
-          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic = \"${topic}\"}[1m]))",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "editorMode": "code",
+          "expr": "sum (rate(kafka_server_brokertopicmetrics_count{cluster_id=~\"$cluster\", name=\"BytesOutPerSec\", topic = \"${topic}\"}[$__rate_interval]))",
           "format": "time_series",
           "instant": false,
           "intervalFactor": 2,
@@ -1454,8 +1556,8 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
-  "schemaVersion": 34,
+  "refresh": "2s",
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "kafka_cluster",
@@ -1472,7 +1574,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(jvm_info{cluster_type=\"kafka\"}, cluster_id)",
         "hide": 0,
@@ -1496,13 +1598,13 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": "pickup-order-handler-pickup-order-groupBy-orderId-repartition",
-          "value": "pickup-order-handler-pickup-order-groupBy-orderId-repartition"
+          "selected": false,
+          "text": "orders-purchase",
+          "value": "orders-purchase"
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "",
         "hide": 0,
@@ -1531,6 +1633,7 @@
   },
   "timepicker": {
     "refresh_intervals": [
+      "2s",
       "5s",
       "10s",
       "30s",
@@ -1556,8 +1659,8 @@
     ]
   },
   "timezone": "",
-  "title": "06 - Kafka Cluster - Topics",
-  "uid": "06_kafka_cluster_topic",
+  "title": "09 - Topics",
+  "uid": "kafka_cluster_topic",
   "version": 1,
   "weekStart": ""
 }

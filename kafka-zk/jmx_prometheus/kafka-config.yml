@@ -1,6 +1,7 @@
    
 lowercaseOutputName: true
 rules:
+#- pattern: .*
 - pattern: java.lang<type=(.*)>
 - pattern: "kafka.server<type=app-info, id=(.+)><>(.*): (.*)"
   name: kafka_server_app_info_$2
@@ -15,7 +16,8 @@ rules:
   value: 1
 - pattern: "kafka.server<type=raft-metrics><>(.+): (.+)"
 - pattern: kafka.cluster<type=Partition, name=UnderReplicated, topic=(.+), partition=(.+)><>Value
-- pattern: kafka.controller<type=KafkaController, name=(.+)><>Value
+- pattern: kafka.controller<type=KafkaController, name=ActiveControllerCount><>Value
+- pattern: kafka.controller<type=KafkaController, name=OfflinePartitionsCount><>Value
 - pattern: kafka.controller<type=ControllerStats, name=UncleanLeaderElectionsPerSec><>Count
 - pattern: kafka.controller<type=ControllerStats, name=UncleanLeaderElectionsPerSec><>OneMinuteRate
 - pattern: kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>Value
@@ -49,4 +51,3 @@ rules:
 - pattern: kafka.server<type=socket-server-metrics, clientSoftwareName=(.+), clientSoftwareVersion=(.+), listener=(.+), networkProcessor=(.+)><>connections
 - pattern: kafka.server<type=socket-server-metrics, listener=(.+), networkProcessor=(.+)><>(.+)
 - pattern: kafka.server<type=DelayedOperationPurgatory, name=PurgatorySize, delayedOperation=(.+)<>Value
-

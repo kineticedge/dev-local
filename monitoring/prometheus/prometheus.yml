@@ -2,25 +2,26 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
+
   - job_name: kafka
     #scrape_interval: 1s
     static_configs:
       - targets:
-        - controller-0:7071
-        - controller-1:7071
-        - controller-2:7071
-        - broker-1:7071
-        - broker-2:7071
-        - broker-3:7071
-        - broker-4:7071
+          - controller-0:7071
+          - controller-1:7071
+          - controller-2:7071
+          - broker-1:7071
+          - broker-2:7071
+          - broker-3:7071
+          - broker-4:7071
         labels:
           cluster_type: "kafka"
           cluster_id: "kafka-core"
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*):(.*)'
+        regex: "(.*):(.*)"
         target_label: instance
-        replacement: '$1'
+        replacement: "$1"
   - job_name: schema-registry
     #scrape_interval: 1s
     static_configs:
@@ -31,24 +32,24 @@ scrape_configs:
           cluster_id: "schema-registry"
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*):(.*)'
+        regex: "(.*):(.*)"
         target_label: instance
-        replacement: '$1'
+        replacement: "$1"
   - job_name: kafka-connect
     #scrape_interval: 1s
     static_configs:
       - targets:
-        - connect-1:7071
-        - connect-2:7071
-        - connect-3:7071
+          - connect-1:7071
+          - connect-2:7071
+          - connect-3:7071
         labels:
           cluster_type: "connect"
           cluster_id: "connect-cluster"
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*):(.*)'
+        regex: "(.*):(.*)"
         target_label: instance
-        replacement: '$1'
+        replacement: "$1"
   - job_name: ksql
     #scrape_interval: 1s
     static_configs:
@@ -60,47 +61,47 @@ scrape_configs:
           cluster_id: "ksql-cluster"
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*):(.*)'
+        regex: "(.*):(.*)"
         target_label: instance
-        replacement: '$1'
+        replacement: "$1"
   - job_name: kafka_exporter
     static_configs:
       - targets:
-        - kafka-exporter:9308
+          - kafka-exporter:9308
   - job_name: druid-exporter
     static_configs:
       - targets:
-        - druid-exporter:7071
+          - druid-exporter:7071
         labels:
           cluster_type: "druid"
           cluster_id: "druid-exporter"
     relabel_configs:
       - source_labels: [__address__]
-        regex: '(.*):(.*)'
+        regex: "(.*):(.*)"
         target_label: instance
-        replacement: '$1'
+        replacement: "$1"
   - job_name: druid
     static_configs:
       - targets:
-        - druid-coordinator:7071
-        - druid-router:7071
-        - druid-broker:7071
-        - druid-historical:7071
-        - druid-middlemanager:7071
+          - druid-coordinator:7071
+          - druid-router:7071
+          - druid-broker:7071
+          - druid-historical:7071
+          - druid-middlemanager:7071
         labels:
           cluster_type: "druid"
           cluster_id: "druid"
     relabel_configs:
-      - source_labels: [ __address__ ]
-        regex: '(.*):(.*)'
+      - source_labels: [__address__]
+        regex: "(.*):(.*)"
         target_label: instance
-        replacement: '$1'
+        replacement: "$1"
   - job_name: flink
     static_configs:
       - targets:
-        - flink_jobmanager:7071
-        - dev-flink-taskmanager-1:7071
-        - dev-flink-taskmanager-2:7071
+          - flink_jobmanager:7071
+          - dev-flink-taskmanager-1:7071
+          - dev-flink-taskmanager-2:7071
         labels:
           cluster_type: "flink"
           cluster_id: "flink"

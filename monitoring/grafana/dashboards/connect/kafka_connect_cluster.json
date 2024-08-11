@@ -1198,7 +1198,7 @@
       "type": "table"
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 32,
   "style": "dark",
   "tags": [
@@ -1306,7 +1306,7 @@
   "timepicker": {
     "hidden": false,
     "refresh_intervals": [
-      "1s",
+      "2s",
       "5s",
       "10s",
       "30s",

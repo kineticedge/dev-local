@@ -37,7 +37,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "fill": 0,
       "fillGradient": 0,
@@ -78,7 +78,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_Status_JVM_Memory_Heap_Max-flink_jobmanager_Status_JVM_Memory_Heap_Used",
           "format": "time_series",
@@ -127,7 +127,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "JobManager NonHeap Memory Available",
       "fill": 1,
@@ -169,7 +169,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_jobmanager_Status_JVM_Memory_NonHeap_Committed-flink_jobmanager_Status_JVM_Memory_NonHeap_Used",
           "format": "time_series",
@@ -213,7 +213,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "TaskManager Memory Available",
       "fieldConfig": {
@@ -294,7 +294,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "editorMode": "code",
           "expr": "flink_taskmanager_Status_JVM_Memory_Heap_Max-flink_taskmanager_Status_JVM_Memory_Heap_Used",
@@ -314,7 +314,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "P1809F7CD0C75ACF3"
+        "uid": "prometheus"
       },
       "description": "TaskManger NonHeap Memory Available",
       "fieldConfig": {
@@ -395,7 +395,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P1809F7CD0C75ACF3"
+            "uid": "prometheus"
           },
           "expr": "flink_taskmanager_Status_JVM_Memory_NonHeap_Committed-flink_taskmanager_Status_JVM_Memory_NonHeap_Used",
           "format": "time_series",
@@ -410,7 +410,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "2s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [
@@ -427,7 +427,7 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "P1809F7CD0C75ACF3"
+          "uid": "prometheus"
         },
         "definition": "label_values(flink_jobmanager_job_uptime{cluster_type=\"flink\"}, cluster_id)",
         "hide": 0,
