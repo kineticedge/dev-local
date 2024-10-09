@@ -28,6 +28,7 @@ task() {
     return
   fi
 
+  #curl -s -X POST -H $CONTENT_TYPE_HDR -d @$DATA $URL/druid/indexer/v1/task
   curl -s -X POST -H $CONTENT_TYPE_HDR -d @$DATA $URL/druid/indexer/v1/task | jq -r ".task"
   #curl -X POST -H "Content-Type:application/json" -d @./druid/compact.json http://localhost:48081/druid/indexer/v1/task
 }

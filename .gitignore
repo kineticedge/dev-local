@@ -5,7 +5,7 @@ grafana.db
 *.bak
 build
 jmxterm.jar
-/connect/secrets/aws.properties
+/connect/secrets/*.properties
 
 /tmp
 /*/data/*

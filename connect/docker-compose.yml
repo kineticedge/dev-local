@@ -17,6 +17,7 @@ services:
     hostname: connect-1
     container_name: connect-1
     ports:
+      - "8083:8083"
       - "18083:8083"
       - "17072:7071"
     healthcheck:
