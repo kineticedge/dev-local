@@ -1,0 +1,11 @@
+## configuration file for simpleFileAuthenticator
+---
+users:
+    - userid: user
+      password: restheart
+      roles: [user]
+
+    - userid: admin
+      password: restheart
+      roles: [admin]
+

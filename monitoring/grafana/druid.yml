@@ -1,0 +1,11 @@
+apiVersion: 1
+
+datasources:
+  - name: druid
+    type: grafadruid-druid-datasource
+    # this plugin actually does not use 'url', but by adding it it shows up nicely in the list of datasources
+    url: http://druid-router:8888
+    jsonData:
+      # this is the actual propety used by this plugin for communicating with the druid router
+      connection.url: "http://druid-router:8888"
+    editable: false

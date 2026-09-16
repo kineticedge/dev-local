@@ -1,0 +1,4 @@
+   
+lowercaseOutputName: true
+rules:
+- pattern: java.lang<type=(.*)>

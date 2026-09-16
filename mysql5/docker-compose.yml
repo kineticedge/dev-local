@@ -1,0 +1,32 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  mysql5: {}
+
+services:
+  mysql5:
+    platform: linux/amd64
+    image: mysql:5.7.38
+    hostname: mysql5
+    container_name: mysql5
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: exit 0
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    volumes:
+      - ./mysql.cnf:/etc/mysql/mysql.conf.d/mysql.cnf
+      - ./init.d:/docker-entrypoint-initdb.d
+      - ./data:/data
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpw
+

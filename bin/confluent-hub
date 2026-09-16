@@ -1,0 +1,8 @@
+#!/bin/bash
+
+"$(dirname -- "$0")"
+
+mkdir -p ../tmp
+touch ../tmp/connect-distributed.properties
+
+confluent-hub install --worker-configs ../tmp/connect-distributed.properties --component-dir . --no-prompt "${@}"

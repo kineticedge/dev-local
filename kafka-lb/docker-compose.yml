@@ -1,0 +1,48 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+services:
+
+  broker-1-lb:
+#    image: nginx:latest
+    build: ./nginx
+    container_name: broker-1-lb
+    hostname: broker-1-lb
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./nginx/broker-1.conf:/etc/nginx/nginx.conf
+
+  broker-2-lb:
+    #image: nginx:latest
+    build: ./nginx
+    container_name: broker-2-lb
+    hostname: broker-2-lb
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./nginx/broker-2.conf:/etc/nginx/nginx.conf
+
+  broker-3-lb:
+    #image: nginx:latest
+    build: ./nginx
+    container_name: broker-3-lb
+    hostname: broker-3-lb
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./nginx/broker-3.conf:/etc/nginx/nginx.conf
+
+  broker-4-lb:
+    #image: nginx:latest
+    build: ./nginx
+    container_name: broker-4-lb
+    hostname: broker-4-lb
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./nginx/broker-4.conf:/etc/nginx/nginx.conf
+

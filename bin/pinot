@@ -1,0 +1,58 @@
+#!/bin/bash
+
+usage() {
+  echo ""
+  echo "Usage: $0 [-d|--delete] {schema|table} file"
+  echo ""
+}
+
+if [ $# -lt 1 ]; then
+  usage
+  exit
+fi
+
+case $1 in
+    -d|--delete)
+      DELETE=true
+      shift
+      ;;
+    *)
+      DELETE=false
+      ;;
+esac
+
+OPERATION=$1
+shift
+
+FIELD=$1
+shift
+
+URL=http://localhost:9000
+
+CONTENT_TYPE_HDR='Content-Type:application/json'
+
+
+#    DATA=$1
+#    if [ ! -f "$DATA" ]; then
+#      echo "skipping $DATA, file not found."
+#      return
+#    fi
+
+case "${OPERATION}" in
+  schema)
+    if [ "$DELETE" == true ]; then
+      curl -s -X DELETE -H $CONTENT_TYPE_HDR "$URL/schemas/$FIELD" | jq
+    else
+      curl -s -X POST -H $CONTENT_TYPE_HDR -d "@$FIELD" "$URL/schemas" | jq
+    fi
+    ;;
+  table)
+    if [ "$DELETE" == true ]; then
+      curl -s -X DELETE -H $CONTENT_TYPE_HDR "$URL/tables/$FIELD" | jq
+    else
+      curl -s -X POST -H $CONTENT_TYPE_HDR -d "@$FIELD" "$URL/tables" | jq
+    fi
+    ;;
+  *)
+    usage
+esac

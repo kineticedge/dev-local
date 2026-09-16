@@ -1,0 +1,30 @@
+#!/bin/bash
+
+
+if ! [ -x "$(command -v jq)" ]; then
+    echo ""
+    echo "jq is not found, please install and make it available on your path, https://stedolan.github.io/jq"
+    echo ""
+    exit
+fi
+
+CONNECT_URL_1="http://localhost:18083"
+CONNECT_URL_2="http://localhost:28083"
+
+ACCEPT="Accept:application/json"
+CONTENT_TYPE="Content-Type:application/json"
+
+LOG=$1
+shift
+
+#LEVEL=$1
+#shift
+
+echo "Connector 1"
+curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X PUT "${CONNECT_URL_1}/admin/loggers/${LOG}" -d '{"level": "TRACE"}' | jq '.'
+
+echo "Connector 2"
+curl -k -s -H "${ACCEPT}" -H "${CONTENT_TYPE}" -X PUT "${CONNECT_URL_2}/admin/loggers/${LOG}" -d '{"level": "TRACE"}' | jq '.'
+
+#plugin=$(cat ${CONFIG} | jq -r '."connector.class"')
+#shift

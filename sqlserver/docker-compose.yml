@@ -1,0 +1,29 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  mssql: {}
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:${VERSION}
+    platform: ${PLATFORM}
+    hostname: mssql
+    container_name: mssql
+#    healthcheck:
+#      test: pg_isready -U main
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql:/var/opt/mssql
+      - ./data:/data
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "MsSQL!Password"
+      MSSQL_PID: Developer

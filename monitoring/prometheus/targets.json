@@ -1,0 +1,24 @@
+[
+  {
+    "targets": [
+    ],
+    "labels": {
+      "job": "producers"
+    }
+  },
+  {
+    "targets": [
+    ],
+    "labels": {
+      "job": "consumers"
+    }
+  },
+  {
+    "targets": [  
+      "stream:7071"
+    ],
+    "labels": {
+      "job": "streams"
+    }
+  }
+]

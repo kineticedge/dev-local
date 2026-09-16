@@ -1,0 +1,28 @@
+
+networks:
+  default:
+    external: true
+    name: dev-local
+
+volumes:
+  data: {}
+  fra: {}  
+
+services:
+
+  oracle:
+    image: oracle/database:19.3.0-se2
+    #image: oracle/database:12.2.0.1-se2
+    hostname: oracle
+    container_name: oracle
+    restart: always
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./init.d:/opt/oracle/scripts
+      - data:/data
+      - fra:/u01/app/oracle/fast_recovery_area
+    environment:
+      ORACLE_SID: MAIN
+      ORACLE_PWD: oracle
+

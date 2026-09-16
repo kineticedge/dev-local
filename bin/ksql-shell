@@ -1,0 +1,28 @@
+#!/bin/sh
+
+usage() {
+  echo ""
+  echo "Usage: $0 ksql-file"
+  echo ""
+}
+
+if [ $# -lt 1 ]; then
+  usage
+  exit
+fi
+
+DIR=$(dirname $0) 
+
+FILE=$1
+shift
+
+if [ ! -f $FILE ]; then
+  echo ""
+  echo "unable to find ksql file."
+  echo ""
+  exit
+fi
+
+ksql --config-file $DIR/config/ksql.properties --file=$FILE
+
+
